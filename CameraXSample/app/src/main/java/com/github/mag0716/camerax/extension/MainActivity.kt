@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewFinder: TextureView
     private lateinit var captureButton: ImageButton
 
+    private var imageCapture: ImageCapture? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,6 +46,21 @@ class MainActivity : AppCompatActivity() {
         }
         viewFinder.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             updateTransform()
+        }
+        captureButton.setOnClickListener {
+            val file = File(externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
+            imageCapture?.takePicture(file,
+                object : ImageCapture.OnImageSavedListener {
+                    override fun onError(useCaseError: ImageCapture.UseCaseError, message: String, cause: Throwable?) {
+                        val msg = "Photo capture failed : $message"
+                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onImageSaved(file: File) {
+                        val msg = "Photo capture succeeded: ${file.absolutePath}"
+                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    }
+                })
         }
     }
 
@@ -99,22 +116,8 @@ class MainActivity : AppCompatActivity() {
             setTargetAspectRatio(aspectRatio)
             setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
         }.build()
-        val imageCapture = ImageCapture(imageCaptureConfig)
-        captureButton.setOnClickListener {
-            val file = File(externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
-            imageCapture.takePicture(file,
-                object: ImageCapture.OnImageSavedListener {
-                    override fun onError(useCaseError: ImageCapture.UseCaseError, message: String, cause: Throwable?) {
-                        val msg = "Photo capture failed : $message"
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    }
+        imageCapture = ImageCapture(imageCaptureConfig)
 
-                    override fun onImageSaved(file: File) {
-                        val msg = "Photo capture succeeded: ${file.absolutePath}"
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    }
-                })
-        }
 
         CameraX.bindToLifecycle(this, preview, imageCapture)
     }
