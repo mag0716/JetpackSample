@@ -9,13 +9,13 @@ import android.util.Size
 import android.view.Surface
 import android.view.TextureView
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraX
-import androidx.camera.core.Preview
-import androidx.camera.core.PreviewConfig
+import androidx.camera.core.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,11 +25,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var viewFinder: TextureView
+    private lateinit var captureButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewFinder = findViewById(R.id.view_finder)
+        captureButton = findViewById(R.id.capture_button)
 
         if (allPermissionsGranted()) {
             viewFinder.post { startCamera() }
@@ -75,10 +77,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
+        val viewFinderWidth = viewFinder.width
+        val viewFinderHeight = viewFinder.height
+        val aspectRatio = Rational(viewFinderWidth, viewFinderHeight)
         val previewConfig = PreviewConfig.Builder().apply {
-            val viewFinderWidth = viewFinder.width
-            val viewFinderHeight = viewFinder.height
-            setTargetAspectRatio(Rational(viewFinderWidth, viewFinderHeight))
+            setTargetAspectRatio(aspectRatio)
             setTargetResolution(Size(viewFinderWidth, viewFinderHeight))
         }.build()
         val preview = Preview(previewConfig)
@@ -92,7 +95,28 @@ class MainActivity : AppCompatActivity() {
             updateTransform()
         }
 
-        CameraX.bindToLifecycle(this, preview)
+        val imageCaptureConfig = ImageCaptureConfig.Builder().apply {
+            setTargetAspectRatio(aspectRatio)
+            setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
+        }.build()
+        val imageCapture = ImageCapture(imageCaptureConfig)
+        captureButton.setOnClickListener {
+            val file = File(externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
+            imageCapture.takePicture(file,
+                object: ImageCapture.OnImageSavedListener {
+                    override fun onError(useCaseError: ImageCapture.UseCaseError, message: String, cause: Throwable?) {
+                        val msg = "Photo capture failed : $message"
+                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onImageSaved(file: File) {
+                        val msg = "Photo capture succeeded: ${file.absolutePath}"
+                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
+
+        CameraX.bindToLifecycle(this, preview, imageCapture)
     }
 
     private fun updateTransform() {
