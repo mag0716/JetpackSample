@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Matrix
 import android.os.Bundle
+import android.util.Log
 import android.util.Rational
 import android.util.Size
 import android.view.Surface
@@ -13,6 +14,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
+import androidx.camera.extensions.BokehImageCaptureExtender
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.File
@@ -20,6 +22,7 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
     companion object {
+        private const val TAG = "CameraXExtension"
         private const val REQUEST_CAMERA_PERMISSION = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
@@ -98,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         val viewFinderHeight = viewFinder.height
         val aspectRatio = Rational(viewFinderWidth, viewFinderHeight)
         val previewConfig = PreviewConfig.Builder().apply {
+            setLensFacing(CameraX.LensFacing.BACK)
             setTargetAspectRatio(aspectRatio)
             setTargetResolution(Size(viewFinderWidth, viewFinderHeight))
         }.build()
@@ -112,12 +116,24 @@ class MainActivity : AppCompatActivity() {
             updateTransform()
         }
 
-        val imageCaptureConfig = ImageCaptureConfig.Builder().apply {
+        val imageCaptureConfigBuilder = ImageCaptureConfig.Builder().apply {
+            setLensFacing(CameraX.LensFacing.BACK)
             setTargetAspectRatio(aspectRatio)
             setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
-        }.build()
-        imageCapture = ImageCapture(imageCaptureConfig)
-
+        }
+        /**
+         * TODO:
+         * https://android.googlesource.com/platform/frameworks/support/+/9b9b6c0ba6fd5a8f3726395a5ff9a03505240fd9/camera/extensions/ を無理やり取り込んでみたが
+         * isExtensionAvailable が false になる
+         *
+         * 多分、extensions の効果を preview にも反映させるためには PreviewExtender を使う必要がある
+         */
+        val bokehImageCaptureConfig = BokehImageCaptureExtender(imageCaptureConfigBuilder)
+        Log.d(TAG, "${bokehImageCaptureConfig.isExtensionAvailable}")
+        if (bokehImageCaptureConfig.isExtensionAvailable) {
+            bokehImageCaptureConfig.enableExtension()
+        }
+        imageCapture = ImageCapture(imageCaptureConfigBuilder.build())
 
         CameraX.bindToLifecycle(this, preview, imageCapture)
     }
