@@ -1,9 +1,5 @@
 # README
 
-## TODO
-
-* OnSwipe onTouchUp
-
 ## app
 
 * https://github.com/googlesamples/android-ConstraintLayoutExamples と同じサンプルを1から実装
@@ -100,12 +96,6 @@
 * `motion_triggerOnCollision` で指定した View が該当の View に触れた場合に `onCross` などで指定したメソッドを呼び出す
   * `callOnClick` を指定すると `OnClickListener` に設定された処理が呼び出される
 
-## onswiperegions
-
-* `OnSwipe` の `touchRegion` の動作を試すサンプル
-* `touchRegion` を指定しない場合は、スワイプ領域が `MotionLayout` 全体になる
-* `touchRegion` を指定すると、指定した View をスワイプしている場合のみアニメーションするようになる
-
 ### 考察
 
 `KeyTrigger` は FAB の show/hide のように View 側にアニメーションさせることができる View で使う。
@@ -120,6 +110,21 @@
 
 最終的な View の位置が隣り合っていれば、Collision を利用することで、
 他の View が最終的な位置に来たら(FAB に触れた)、アニメーションさせるという定義が実現できる。
+
+## onswipe
+
+* `OnSwipe` の動作を試すサンプル
+  * `touchRegion`
+    * 指定しない場合は、スワイプ領域が `MotionLayout` 全体になる
+    * 指定すると、指定した View をスワイプしている場合のみアニメーションするようになる
+  * `onTouchUp`
+    * スワイプで指を離したときの動作を指定できる
+      * デフォルトは `autoComplete` でスワイプの移動量や速度によって start, end のいずれかまで自動でアニメーションする
+      * `stop` を指定すれば指を離した箇所で停止する
+
+### 疑問点
+
+* `touchRegion` を指定していてもアニメーション途中だと領域外でのスワイプが可能になってしまうがこれは正常な動作？
 
 ## diff
 
