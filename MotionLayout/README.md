@@ -2,7 +2,6 @@
 
 ## TODO
 
-* OnSwipe regions
 * OnSwipe onTouchUp
 
 ## app
@@ -70,6 +69,21 @@
   * `app:constraint_referenced_ids` を指定しているが、全ての `View` に対して alpha 値が変更されてしまう
 * アニメーションの最後に他の `Constraint` に引きづられて、alpha 値が 1 に戻ってしまう
 
+### 概要
+
+* `Animatable` を実装
+* `ContainerHelper` を継承
+* `onShow`, `onHide` を指定できる
+* `setProgress`
+  * `referencesId` が指定されている
+    * `MotionHelper` が定義された同列の `View` に対して、`setProgress` を適用
+  * `referencesId` が指定されていない
+    * `MotionHelper` が定義された同列の `MotionHelper` 以外の `View` に対して、 `setProgress` を適用
+* `MotionHelper` の `setProgress` が呼ばれるまで
+  * `MotionLayout` に `MotionHelper` が定義し、`onShow` or `onHide` を指定する
+    * `MotionLayout` で `onShow` or `onHide` が指定された、`MotionHelper` を管理する
+  * `MotionLayout` の `setOnShow` or `setOnHide`　が呼ばれると、`onShow` or `onHide` が指定された `MotionHelper` 全てに対して、`setProgress` が呼ばれる
+
 ## arcmotion
 
 * `pathMotionArc` を指定した場合の動作を試すサンプル
@@ -86,6 +100,12 @@
 * `motion_triggerOnCollision` で指定した View が該当の View に触れた場合に `onCross` などで指定したメソッドを呼び出す
   * `callOnClick` を指定すると `OnClickListener` に設定された処理が呼び出される
 
+## onswiperegions
+
+* `OnSwipe` の `touchRegion` の動作を試すサンプル
+* `touchRegion` を指定しない場合は、スワイプ領域が `MotionLayout` 全体になる
+* `touchRegion` を指定すると、指定した View をスワイプしている場合のみアニメーションするようになる
+
 ### 考察
 
 `KeyTrigger` は FAB の show/hide のように View 側にアニメーションさせることができる View で使う。
@@ -100,22 +120,6 @@
 
 最終的な View の位置が隣り合っていれば、Collision を利用することで、
 他の View が最終的な位置に来たら(FAB に触れた)、アニメーションさせるという定義が実現できる。
-
-
-### 概要
-
-* `Animatable` を実装
-* `ContainerHelper` を継承
-* `onShow`, `onHide` を指定できる
-* `setProgress`
-  * `referencesId` が指定されている
-    * `MotionHelper` が定義された同列の `View` に対して、`setProgress` を適用
-  * `referencesId` が指定されていない
-    * `MotionHelper` が定義された同列の `MotionHelper` 以外の `View` に対して、 `setProgress` を適用
-* `MotionHelper` の `setProgress` が呼ばれるまで
-  * `MotionLayout` に `MotionHelper` が定義し、`onShow` or `onHide` を指定する
-    * `MotionLayout` で `onShow` or `onHide` が指定された、`MotionHelper` を管理する
-  * `MotionLayout` の `setOnShow` or `setOnHide`　が呼ばれると、`onShow` or `onHide` が指定された `MotionHelper` 全てに対して、`setProgress` が呼ばれる
 
 ## diff
 
