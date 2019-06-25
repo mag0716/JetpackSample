@@ -1,10 +1,5 @@
 # README
 
-## TODO
-
-* OnSwipe regions
-* OnSwipe onTouchUp
-
 ## app
 
 * https://github.com/googlesamples/android-ConstraintLayoutExamples と同じサンプルを1から実装
@@ -70,6 +65,21 @@
   * `app:constraint_referenced_ids` を指定しているが、全ての `View` に対して alpha 値が変更されてしまう
 * アニメーションの最後に他の `Constraint` に引きづられて、alpha 値が 1 に戻ってしまう
 
+### 概要
+
+* `Animatable` を実装
+* `ContainerHelper` を継承
+* `onShow`, `onHide` を指定できる
+* `setProgress`
+  * `referencesId` が指定されている
+    * `MotionHelper` が定義された同列の `View` に対して、`setProgress` を適用
+  * `referencesId` が指定されていない
+    * `MotionHelper` が定義された同列の `MotionHelper` 以外の `View` に対して、 `setProgress` を適用
+* `MotionHelper` の `setProgress` が呼ばれるまで
+  * `MotionLayout` に `MotionHelper` が定義し、`onShow` or `onHide` を指定する
+    * `MotionLayout` で `onShow` or `onHide` が指定された、`MotionHelper` を管理する
+  * `MotionLayout` の `setOnShow` or `setOnHide`　が呼ばれると、`onShow` or `onHide` が指定された `MotionHelper` 全てに対して、`setProgress` が呼ばれる
+
 ## arcmotion
 
 * `pathMotionArc` を指定した場合の動作を試すサンプル
@@ -101,21 +111,20 @@
 最終的な View の位置が隣り合っていれば、Collision を利用することで、
 他の View が最終的な位置に来たら(FAB に触れた)、アニメーションさせるという定義が実現できる。
 
+## onswipe
 
-### 概要
+* `OnSwipe` の動作を試すサンプル
+  * `touchRegion`
+    * 指定しない場合は、スワイプ領域が `MotionLayout` 全体になる
+    * 指定すると、指定した View をスワイプしている場合のみアニメーションするようになる
+  * `onTouchUp`
+    * スワイプで指を離したときの動作を指定できる
+      * デフォルトは `autoComplete` でスワイプの移動量や速度によって start, end のいずれかまで自動でアニメーションする
+      * `stop` を指定すれば指を離した箇所で停止する
 
-* `Animatable` を実装
-* `ContainerHelper` を継承
-* `onShow`, `onHide` を指定できる
-* `setProgress`
-  * `referencesId` が指定されている
-    * `MotionHelper` が定義された同列の `View` に対して、`setProgress` を適用
-  * `referencesId` が指定されていない
-    * `MotionHelper` が定義された同列の `MotionHelper` 以外の `View` に対して、 `setProgress` を適用
-* `MotionHelper` の `setProgress` が呼ばれるまで
-  * `MotionLayout` に `MotionHelper` が定義し、`onShow` or `onHide` を指定する
-    * `MotionLayout` で `onShow` or `onHide` が指定された、`MotionHelper` を管理する
-  * `MotionLayout` の `setOnShow` or `setOnHide`　が呼ばれると、`onShow` or `onHide` が指定された `MotionHelper` 全てに対して、`setProgress` が呼ばれる
+### 疑問点
+
+* `touchRegion` を指定していてもアニメーション途中だと領域外でのスワイプが可能になってしまうがこれは正常な動作？
 
 ## diff
 
