@@ -1,7 +1,7 @@
-package com.github.mag0716.motionlayoutsample.onswiperegions
+package com.github.mag0716.motionlayoutsample.onswipe
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 

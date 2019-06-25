@@ -7,6 +7,7 @@
         motion:constraintSetStart="@id/start"
         motion:duration="1000">
         <OnSwipe
+            motion:onTouchUp="stop"
             motion:dragDirection="dragDown"
             motion:touchAnchorId="@id/view"
             motion:touchAnchorSide="bottom"

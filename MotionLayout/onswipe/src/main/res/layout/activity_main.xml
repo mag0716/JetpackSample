@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layoutDescription="@xml/motion"
     app:showPaths="true"
-    tools:context=".MainActivity">
+    tools:context="com.github.mag0716.motionlayoutsample.onswipe.MainActivity">
 
     <View
         android:id="@+id/view"
