@@ -132,6 +132,10 @@
   * showDrawer <- base -> showBottomSheet
     * showDrawer の状態から showBottomSheet へはアニメーションできない
 
+### 疑問点
+
+* `deriveConstraintsFrom` を使うと正しく動作しない
+
 ## diff
 
 ## 2.0.0-beta2
