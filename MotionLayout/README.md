@@ -126,6 +126,16 @@
 
 * `touchRegion` を指定していてもアニメーション途中だと領域外でのスワイプが可能になってしまうがこれは正常な動作？
 
+## multistate
+
+* 複数の `ConstraintSet` の動作を試すサンプル
+  * showDrawer <- base -> showBottomSheet
+    * showDrawer の状態から showBottomSheet へはアニメーションできない
+
+### 疑問点
+
+* `deriveConstraintsFrom` を使うと正しく動作しない
+
 ## diff
 
 ## 2.0.0-beta2
