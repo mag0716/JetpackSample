@@ -33,11 +33,11 @@ class MainActivity : AppCompatActivity() {
 
         // enqueue した時点で work2 は BLOCKED になる
         // その後、work1 が SUCCEEDED になったら、work2 が ENQUEUED -> RUNNING -> SUCCEEDED となる
-        WorkManager.getInstance().getStatusById(work1.id)
+        WorkManager.getInstance().getStatusByIdLiveData(work1.id)
                 .observe(this, Observer { status ->
                     Log.d(TAG, "observe[work1] : status = $status")
                 })
-        WorkManager.getInstance().getStatusById(work2.id)
+        WorkManager.getInstance().getStatusByIdLiveData(work2.id)
                 .observe(this, Observer { status ->
                     Log.d(TAG, "observe[work2] : status = $status")
                 })
@@ -56,11 +56,11 @@ class MainActivity : AppCompatActivity() {
                 .setInputData(LoggingWorker.createInputData("$TAG-2"))
                 .build()
 
-        WorkManager.getInstance().getStatusById(work1.id)
+        WorkManager.getInstance().getStatusByIdLiveData(work1.id)
                 .observe(this, Observer { status ->
                     Log.d(TAG, "observe[work1] : status = $status")
                 })
-        WorkManager.getInstance().getStatusById(work2.id)
+        WorkManager.getInstance().getStatusByIdLiveData(work2.id)
                 .observe(this, Observer { status ->
                     Log.d(TAG, "observe[work2] : status = $status")
                 })

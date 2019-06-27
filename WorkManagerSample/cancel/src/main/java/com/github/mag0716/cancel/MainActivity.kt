@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         val work = work
         if (work != null) {
             // ENQUEUED -> RUNNING -> SUCCEEDED の順だが、ENQUEUED が出力されない場合もある
-            WorkManager.getInstance().getStatusById(work.id)
+            WorkManager.getInstance().getStatusByIdLiveData(work.id)
                     .observe(this, Observer { status ->
                         Log.d(TAG, "observe : status = $status")
                     })
