@@ -18,7 +18,7 @@ class LoggingWorker(context: Context, workerParameters: WorkerParameters) : Work
         Log.d(tag, "doWork start...")
         Thread.sleep(3000)
 
-        if (isCancelled) {
+        if (isStopped) {
             return Result.FAILURE
         }
 

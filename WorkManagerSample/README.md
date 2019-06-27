@@ -63,6 +63,21 @@
 
 ### [1.0.0-alpha11](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha11)
 
+* [API Changes] `CoroutineWorker` が追加
+* [Breaking Changes] `WorkStatus` が `WorkInfo` にリネームされ、`getStatus` が `getWorkInfo` にリネームされた
+* [Breaking Changes] `ListenableWorker.onStopped` の引数がなくなった
+* [Breaking Changes] `androidx.work.test` が `androidx.work.testing` にリネーム
+* [Breaking Changes] `Constraints` の public な setter がなくなった
+* [Breaking Changes] `WorkerParameters.getTriggeredContentUris()`, `WorkerParameters.getTriggeredContentAuthorities()` の戻り値が Array から Collection に変わった
+* [Breaking Changes] `ListenableWorker.onStartWork()` が `ListenableWorker.startWork()` にリネーム
+* [Breaking Changes] `WorkStatus` のコンストラクタの一部がなくなった
+* [Breaking Changes] `Configuration.getMaxJobSchedulerID`, `Configuration.getMinJobSchedulerID` の `ID` が `Id` にリネーム
+* [API Changes] 多くの API に `@NonNull` が追加された
+* [API Changes] `WorkManager.enqueueUniqueWork` が追加
+* [Breaking Changes] `enqueue`, `cancel` が `Operation` を返すようになった
+* [Breaking Changes] `enqueue` は `WorkRequest` の引数を受けつけなくなった
+* [Breaking Changes] `WorkManager` を複数初期化すると `IllegalStateException` が発生するようになった 
+
 ### [1.0.0-alpha10](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha10)
 
 * [Breaking Change] Worker のデフォルトコンストラクタなどの deprecated なメソッドやクラスが削除された
