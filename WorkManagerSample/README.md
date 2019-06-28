@@ -31,11 +31,20 @@
 
 ### [2.0.1](https://developer.android.com/jetpack/androidx/releases/work#2.0.1)
 
+* 2.0.1-rc01 をバージョン名のみ変更
+
 ### [2.0.1-rc01](https://developer.android.com/jetpack/androidx/releases/work#2.0.1-rc01)
+
+* 1.0.1-rc01 を AndroidX 化
 
 ### [2.0.0](https://developer.android.com/jetpack/androidx/releases/work#2.0.0)
 
+* 2.0.0-rc01 をバージョン名のみ変更
+
 ### [2.0.0-rc01](https://developer.android.com/jetpack/androidx/releases/work#2.0.0-rc01)
+
+* 1.0.0 を AndroidX 化
+  * 以降は 1.x はクリティカルなバグのみの修正で、2.x で開発が進む
 
 ### [1.0.1](https://developer.android.com/jetpack/androidx/releases/work#1.0.1)
 
