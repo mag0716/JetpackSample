@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/cancel" />
             <option value="$PROJECT_DIR$/chainedtask" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/coroutinesworker" />
             <option value="$PROJECT_DIR$/onetime" />
             <option value="$PROJECT_DIR$/periodic" />
             <option value="$PROJECT_DIR$/rxworker" />
