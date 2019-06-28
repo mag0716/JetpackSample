@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val work = PeriodicWorkRequestBuilder<LoggingWorker>(1L, TimeUnit.MINUTES)
                 .setInputData(LoggingWorker.createInputData(TAG))
                 .build()
-        WorkManager.getInstance().getStatusById(work.id)
+        WorkManager.getInstance().getWorkInfoByIdLiveData(work.id)
                 .observe(this, Observer { status ->
                     Log.d(TAG, "observe : status = $status")
                 })

@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 .setInputData(LoggingWorker.createInputData(TAG))
                 .build()
         // ENQUEUED -> RUNNING -> SUCCEEDED の順だが、ENQUEUED が出力されない場合もある
-        WorkManager.getInstance().getStatusById(work.id)
+        WorkManager.getInstance().getWorkInfoByIdLiveData(work.id)
                 .observe(this, Observer { status ->
                     Log.d(TAG, "observe : status = $status")
                 })

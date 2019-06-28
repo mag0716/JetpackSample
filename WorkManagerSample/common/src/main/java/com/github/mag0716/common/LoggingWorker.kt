@@ -18,11 +18,11 @@ class LoggingWorker(context: Context, workerParameters: WorkerParameters) : Work
         Log.d(tag, "doWork start...")
         Thread.sleep(3000)
 
-        if (isCancelled) {
-            return Result.FAILURE
+        if (isStopped) {
+            return Result.failure()
         }
 
         Log.d(tag, "doWork finish!!")
-        return Result.SUCCESS
+        return Result.success()
     }
 }
