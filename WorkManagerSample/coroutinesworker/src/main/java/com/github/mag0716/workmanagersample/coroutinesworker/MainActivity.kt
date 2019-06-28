@@ -1,4 +1,4 @@
-package com.github.mag0716.workmanagersample.rxworker
+package com.github.mag0716.workmanagersample.coroutinesworker
 
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        const val TAG = "RxWork"
+        const val TAG = "CoroutinesWorker"
     }
 
     var work: OneTimeWorkRequest? = null
@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startOneTimeWork() {
-        work = OneTimeWorkRequestBuilder<LoggingRxWorker>()
-                .setInputData(LoggingRxWorker.createInputData(TAG))
+        work = OneTimeWorkRequestBuilder<LoggingCoroutineWorker>()
+                .setInputData(LoggingCoroutineWorker.createInputData(TAG))
                 .build()
         val work = work
         if (work != null) {
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         val work = work
         if (work != null) {
             // CANCELLED が呼ばれる
-            // LoggingRxWorker#doWork 内の処理は自動的にキャンセルされる
+            // LoggingCoroutineWorker#doWork 内の処理は自動的にキャンセルされる
             WorkManager.getInstance().cancelWorkById(work.id)
         }
     }

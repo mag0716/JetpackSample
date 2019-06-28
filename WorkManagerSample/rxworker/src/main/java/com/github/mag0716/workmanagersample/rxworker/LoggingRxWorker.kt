@@ -16,7 +16,6 @@ class LoggingRxWorker(context: Context, workerParameters: WorkerParameters) : Rx
 
     override fun createWork(): Single<Result> {
         val tag = inputData.getString(KEY)
-        Log.d(tag, "doWork start...")
         return Single.just(tag)
                 .delay(3, TimeUnit.SECONDS)
                 .doOnSubscribe { Log.d(tag, "createWork start...") }
