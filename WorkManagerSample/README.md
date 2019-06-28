@@ -39,23 +39,45 @@
 
 ### [1.0.1](https://developer.android.com/jetpack/androidx/releases/work#1.0.1)
 
+* 1.0.1-rc01 をバージョン名のみ変更
+
 ### [1.0.1-rc01](https://developer.android.com/jetpack/androidx/releases/work#1.0.1-rc01)
+
+* Bug Fixes のみ
 
 ### [1.0.0](https://developer.android.com/jetpack/androidx/releases/work#1.0.0)
 
+* 1.0.0-rc02 をバージョン名のみ変更
+
 ### [1.0.0-rc02](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-rc02)
+
+* Bug Fixes のみ
+  * アプリがクラッシュした後も Worker が正常に動作するようになった
 
 ### [1.0.0-rc01](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-rc01)
 
+* Bug Fixes のみ
+
 ### [1.0.0-beta05](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-beta05)
+
+* Bug Fixes のみ
 
 ### [1.0.0-beta04](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-beta04)
 
+* Bug Fixes のみ
+  * `exported="false"` のつけ忘れ修正
+
 ### [1.0.0-beta03](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-beta03)
+
+* Bug Fixes のみ
 
 ### [1.0.0-beta02](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-beta02)
 
+* Bug Fixes のみ
+
 ### [1.0.0-beta01](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-beta01)
+
+* Bug Fixes のみ
 
 ### [1.0.0-alpha13](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha13)
 
