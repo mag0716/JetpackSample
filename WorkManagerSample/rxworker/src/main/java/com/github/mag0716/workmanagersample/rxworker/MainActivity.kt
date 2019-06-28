@@ -43,8 +43,7 @@ class MainActivity : AppCompatActivity() {
         val work = work
         if (work != null) {
             // CANCELLED が呼ばれる
-            // LoggingWorker#doWork 内の処理が止まるわけではない。必要があれば、Worker 側でキャンセルされたかどうかをチェックする
-            // SUCCEEDED 後にキャンセルしても何も出力されない
+            // LoggingRxWorker#doWork 内の処理は自動的にキャンセルされる
             WorkManager.getInstance().cancelWorkById(work.id)
         }
     }
