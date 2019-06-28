@@ -59,6 +59,8 @@
 
 ### [1.0.0-alpha13](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha13)
 
+* [Breaking Changes] `Result` が `ListenableWorker` の inner class になった
+
 ### [1.0.0-alpha12](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha12)
 
 * [API Changes] `RxWorker` が追加
@@ -68,7 +70,10 @@
 * [API Changes] API 26 以上で使える `WorkerRequest.Builder.setBackoffCriteria` が追加された
 * [Breaking Changes] `ContentUriTriggers` が public でなくなった
 * [Breaking Changes] `WorkManager`, `WorkContinuation`, `OneTimeWorkRequest` の API で引数が varargs なメソッドが削除された
-* [Breaking Changes] 
+* [Breaking Changes] `WorkContinuation.combine` が削除された
+* [Breaking Changes] `Operation.await()`, `ListenableFuture.await()` が追加された
+* [Breaking CHanges] `Operation.getException()` が `Operation.getThrowable()` にリネーム
+
 
 ### [1.0.0-alpha11](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha11)
 
