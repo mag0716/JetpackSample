@@ -2,6 +2,7 @@ package com.github.mag0716.common
 
 import android.content.Context
 import android.util.Log
+import androidx.work.Result
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
@@ -19,10 +20,10 @@ class LoggingWorker(context: Context, workerParameters: WorkerParameters) : Work
         Thread.sleep(3000)
 
         if (isStopped) {
-            return Result.FAILURE
+            return Result.failure()
         }
 
         Log.d(tag, "doWork finish!!")
-        return Result.SUCCESS
+        return Result.success()
     }
 }

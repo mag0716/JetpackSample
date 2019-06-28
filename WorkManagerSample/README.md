@@ -61,6 +61,15 @@
 
 ### [1.0.0-alpha12](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha12)
 
+* [API Changes] `RxWorker` が追加
+* [API Changes] Firebase JobDispatcher サポートが削除された
+* [Breaking Changes] `Palyload` が　 `Result` に組み込まれた
+* [API Changes] `Constraints.Builder.setTriggerContentMaxDelay`, `Constraints.Builder.setTriggerContentUpdateDelay` が追加された
+* [API Changes] API 26 以上で使える `WorkerRequest.Builder.setBackoffCriteria` が追加された
+* [Breaking Changes] `ContentUriTriggers` が public でなくなった
+* [Breaking Changes] `WorkManager`, `WorkContinuation`, `OneTimeWorkRequest` の API で引数が varargs なメソッドが削除された
+* [Breaking Changes] 
+
 ### [1.0.0-alpha11](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha11)
 
 * [API Changes] `CoroutineWorker` が追加
@@ -76,7 +85,7 @@
 * [API Changes] `WorkManager.enqueueUniqueWork` が追加
 * [Breaking Changes] `enqueue`, `cancel` が `Operation` を返すようになった
 * [Breaking Changes] `enqueue` は `WorkRequest` の引数を受けつけなくなった
-* [Breaking Changes] `WorkManager` を複数初期化すると `IllegalStateException` が発生するようになった 
+* [Breaking Changes] `WorkManager` を複数初期化すると `IllegalStateException` が発生するようになった
 
 ### [1.0.0-alpha10](https://developer.android.com/jetpack/androidx/releases/work#1.0.0-alpha10)
 
