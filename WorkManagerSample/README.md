@@ -2,7 +2,6 @@
 
 ## TODO
 
-* on-demand initialization
 * runAttemptCount
 * DelegatingWorkerFactory
 
@@ -20,6 +19,7 @@
 | chainedtask | 2つの Worker を直列、並列で実行するサンプル | 1.0.0-alpha08 | |
 | coroutinesworker | CoroutineWorker を1度実行するサンプル | 2.0.1 | |
 | rxworker | RxWorker を1度実行するサンプル | 2.0.1 | |
+| ondemandinitialization | On-demand initialization を試すサンプル | 2.1.0-rc01 | |
 
 ### periodic
 
