@@ -1,8 +1,14 @@
 # WorkManagerSample
 
+## TODO
+
+* on-demand initialization
+* runAttemptCount
+* DelegatingWorkerFactory
+
 ## 対象バージョン
 
-* 1.0.0-alpha08
+* 2.0.1
 
 ## サンプル
 
@@ -12,6 +18,8 @@
 | periodic | Worker を定期的に実行するサンプル | 1.0.0-alpha08 | interval を1分に指定しているが、最小リピート間隔は呼び出す API や端末の状態による |
 | cancel | ID を指定してキャンセルするサンプル | 1.0.0-alpha08 | |
 | chainedtask | 2つの Worker を直列、並列で実行するサンプル | 1.0.0-alpha08 | |
+| coroutinesworker | CoroutineWorker を1度実行するサンプル | 2.0.1 | |
+| rxworker | RxWorker を1度実行するサンプル | 2.0.1 | |
 
 ### periodic
 
@@ -28,6 +36,39 @@
 ```
 
 ## Release Notes
+
+### [2.1.0-rc01](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-rc01)
+
+* Bug Fixes のみ
+
+### [2.1.0-beta02](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-beta02)
+
+* Bug Fixes のみ
+
+### [2.1.0-beta01](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-beta01)
+
+* Bug Fixes のみ
+
+### [2.1.0-alpha03](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-alpha03)
+
+* ドキュメントと Bug Fixes のみ
+
+### [2.1.0-alpha02](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-alpha02)
+
+* [API Changes] `PeriodicWorkRequest` の初期遅延がサポートされた
+* [API Changes] `DelegatingWorkerFactory` で1つ以上の `WorkerFactory` が登録できるようになった
+* [API Changes] `Configuration.Builder.setTaskExecutor` で `Executor` をカスタムできるようになった
+* [API Changes] ドキュメントの改善
+
+### [2.1.0-alpha01](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-alpha01)
+
+* [API Changes] on-demand 初期化が追加された
+* [API Changes] テスト用に `TestWorkeBuilder`, `TestListenableWorkerBuilder` が追加された
+  * `work-testing` に Kotlin の依存関係が追加された
+* [API Changes] 指定した回数分のリトライするための `runAttemptCount` が追加された
+* [API Changes] `Data` が bytes, byte arrays を保存、復帰できるようになった
+* [API Changes] `CoroutinsWorker.coroutineContext` が deprecated
+* [API Changes] `RxWorker.createWork()`, `RxWorker.getBackgroundScheduler` に `@NonNull` が追加された
 
 ### [2.0.1](https://developer.android.com/jetpack/androidx/releases/work#2.0.1)
 
