@@ -1,8 +1,13 @@
 # WorkManagerSample
 
+## TODO
+
+* on-demand initialization
+* runAttemptCount
+
 ## 対象バージョン
 
-* 1.0.0-alpha08
+* 2.0.1
 
 ## サンプル
 
@@ -28,6 +33,25 @@
 ```
 
 ## Release Notes
+
+
+### [2.1.0-beta02](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-beta02)
+
+### [2.1.0-beta01](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-beta01)
+
+### [2.1.0-alpha03](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-alpha03)
+
+### [2.1.0-alpha02](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-alpha02)
+
+### [2.1.0-alpha01](https://developer.android.com/jetpack/androidx/releases/work#2.1.0-alpha01)
+
+* [API Changes] on-demand 初期化が追加された
+* [API Changes] テスト用に `TestWorkeBuilder`, `TestListenableWorkerBuilder` が追加された
+  * `work-testing` に Kotlin の依存関係が追加された
+* [API Changes] 指定した回数分のリトライするための `runAttemptCount` が追加された
+* [API Changes] `Data` が bytes, byte arrays を保存、復帰できるようになった
+* [API Changes] `CoroutinsWorker.coroutineContext` が deprecated
+* [API Changes] `RxWorker.createWork()`, `RxWorker.getBackgroundScheduler` に `@NonNull` が追加された
 
 ### [2.0.1](https://developer.android.com/jetpack/androidx/releases/work#2.0.1)
 
