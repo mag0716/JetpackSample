@@ -1,1 +1,1 @@
-include ':common', ':onetime', ':periodic', ':chainedtask', ':cancel', ':rxworker', ':coroutinesworker', ':ondemandinitialization'
+include ':common', ':onetime', ':periodic', ':chainedtask', ':cancel', ':rxworker', ':coroutinesworker', ':ondemandinitialization', ':retry'

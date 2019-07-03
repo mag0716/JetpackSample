@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/ondemandinitialization" />
             <option value="$PROJECT_DIR$/onetime" />
             <option value="$PROJECT_DIR$/periodic" />
+            <option value="$PROJECT_DIR$/retry" />
             <option value="$PROJECT_DIR$/rxworker" />
           </set>
         </option>
