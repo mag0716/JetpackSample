@@ -2,7 +2,6 @@
 
 ## TODO
 
-* runAttemptCount
 * DelegatingWorkerFactory
 
 ## 対象バージョン
@@ -20,6 +19,7 @@
 | coroutinesworker | CoroutineWorker を1度実行するサンプル | 2.0.1 | |
 | rxworker | RxWorker を1度実行するサンプル | 2.0.1 | |
 | ondemandinitialization | On-demand initialization を試すサンプル | 2.1.0-rc01 | |
+| retry | runAttemptCount を使って、指定した回数だけリトライするサンプル | 2.1.0-rc01 | |
 
 ### periodic
 
