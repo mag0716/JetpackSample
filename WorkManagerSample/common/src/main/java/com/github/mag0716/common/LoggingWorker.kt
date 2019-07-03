@@ -9,20 +9,31 @@ import androidx.work.workDataOf
 class LoggingWorker(context: Context, workerParameters: WorkerParameters) : Worker(context, workerParameters) {
 
     companion object {
-        private const val KEY = "Tag"
-        fun createInputData(tag: String) = workDataOf(KEY to tag)
+        private const val KEY_TAG = "Tag"
+        private const val KEY_COUNT = "Count"
+        fun createInputData(tag: String) = workDataOf(KEY_TAG to tag)
+        fun createInputData(tag: String, count: Int) = workDataOf(KEY_TAG to tag, KEY_COUNT to count)
     }
 
     override fun doWork(): Result {
-        val tag = inputData.getString(KEY)
-        Log.d(tag, "doWork start...")
+        val tag = inputData.getString(KEY_TAG)
+        val count = inputData.getInt(KEY_COUNT, 0)
+        Log.d(tag, "doWork start... : $count")
         Thread.sleep(3000)
 
         if (isStopped) {
             return Result.failure()
         }
 
-        Log.d(tag, "doWork finish!!")
-        return Result.success()
+        Log.d(tag, "doWork finish!! : $runAttemptCount")
+        if (count == 0) {
+            return Result.success()
+        } else {
+            if (runAttemptCount < count) {
+                return Result.retry()
+            } else {
+                return Result.success()
+            }
+        }
     }
 }
