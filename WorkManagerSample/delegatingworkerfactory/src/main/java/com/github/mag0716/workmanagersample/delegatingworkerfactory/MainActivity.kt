@@ -25,7 +25,8 @@ class MainActivity : AppCompatActivity() {
         val configuration = Configuration.Builder()
                 .setWorkerFactory(workerFactory)
                 .build()
-        workerFactory.addFactory(LoggingWorkerFactory())
+        workerFactory.addFactory(LoggingWorkerFactory("WorkerFactory1"))
+        workerFactory.addFactory(LoggingWorkerFactory("WorkerFactory2"))
         WorkManager.initialize(this, configuration)
 
         button.setOnClickListener { startOneTimeWork() }
