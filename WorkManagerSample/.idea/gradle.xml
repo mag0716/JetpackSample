@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/chainedtask" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/coroutinesworker" />
+            <option value="$PROJECT_DIR$/delegatingworkerfactory" />
             <option value="$PROJECT_DIR$/ondemandinitialization" />
             <option value="$PROJECT_DIR$/onetime" />
             <option value="$PROJECT_DIR$/periodic" />
