@@ -4,7 +4,7 @@
 
 ## 対象バージョン
 
-2.1.0-alpha05
+2.1.0-alpha06
 
 ## TODO
 
@@ -40,6 +40,21 @@
 ## 更新履歴
 
 https://developer.android.com/jetpack/androidx/releases/navigation
+
+### 2.1.0-alpha06
+
+#### New features
+
+* `app:navGraph` が navigation-runtime に移動
+
+#### API changes
+
+* `NavController#getViewModelStore()` が deprecated になり、`getViewModelStoreOwner()` が追加された
+* `<dialog>` のような destination は `FloatingWindow` interface が生成され、AppBar　からの操作では無視される
+
+#### Behavior changes
+
+* `<dialog>` destination の場合に状態を正しく保持できるようになったので、自動でダイアログをポップするようになった
 
 ### 2.1.0-alpha05
 
