@@ -4,7 +4,7 @@
 
 ## 対象バージョン
 
-2.1.0-alpha03
+2.1.0-alpha05
 
 ## TODO
 
@@ -40,6 +40,19 @@
 ## 更新履歴
 
 https://developer.android.com/jetpack/androidx/releases/navigation
+
+### 2.1.0-alpha05
+
+#### API changes
+
+* `NavController` が `NavController`, `NavHostController` に分かれた
+* `setHostOnBackPressedDispatcherOwner` が `setOnBackPressedDispatcher` に置き換えられた
+* `setHostOnBackPressedDispatcherOwner` が返していた `NavHostONBackPressedManager` を置き換える `enableOnBackPressed` が追加された
+
+### 2.1.0-alpha04
+
+Bug fixes のみ
+2.1.0-alpha03 の Known Issues が直っている
 
 ### 2.1.0-alpha03
 
