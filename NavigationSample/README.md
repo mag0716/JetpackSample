@@ -4,7 +4,11 @@
 
 ## 対象バージョン
 
-1.0.0-alpha07
+2.1.0-alpha02
+
+## TODO
+
+* navgraphViewModels
 
 ## サンプル
 
@@ -35,6 +39,17 @@
 ## 更新履歴
 
 https://developer.android.com/jetpack/androidx/releases/navigation
+
+### 2.1.0-alpha02
+
+#### New features
+
+* `by navgraphViewModels()` で Navigation Graph ごとのスコープの ViewModel を取得できる
+
+#### API Changes
+
+* `<activity>` desitination に `app:targetPackage` を定義できるようになった
+  * `app:targetPackage="${appliationId}"` で自身のパッケージを指定できる
 
 ### 2.1.0-alpha01
 
