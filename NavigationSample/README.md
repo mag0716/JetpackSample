@@ -4,11 +4,12 @@
 
 ## 対象バージョン
 
-2.1.0-alpha02
+2.1.0-alpha03
 
 ## TODO
 
 * navgraphViewModels
+* dialog destination
 
 ## サンプル
 
@@ -39,6 +40,26 @@
 ## 更新履歴
 
 https://developer.android.com/jetpack/androidx/releases/navigation
+
+### 2.1.0-alpha03
+
+#### Known Issues
+
+* `app:defaultNavHost="false"` にしていても、バックキーをインターセプトしてしまう
+
+#### New features
+
+* `<dialog>` desitination
+* `<deepLink>` を利用して navigate で遷移できるように
+
+#### Behavior changes
+
+* アニメーションが 400ms から 220ms に短縮された
+
+#### API Changes
+
+* `NavHostFragment#createFragmentNavigator()` が deprecated になり `onCreateNavController()` が追加された
+* `NavDestination#hasDeepLink()` が追加された
 
 ### 2.1.0-alpha02
 
