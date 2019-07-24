@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
 
@@ -15,11 +17,10 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        button.setOnClickListener(
-//                Navigation.createNavigateOnClickListener(
-//                        R.id.action_mainFragment_to_secondActivity,
-//                        bundleOf(SecondActivity.DATA to "move from MainFragment")
-//                )
-//        )
+        button.setOnClickListener(
+                Navigation.createNavigateOnClickListener(
+                        R.id.action_mainFragment_to_messageDialog
+                )
+        )
     }
 }

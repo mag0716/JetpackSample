@@ -9,7 +9,13 @@
         android:name="com.github.mag0716.navigationsample.dialog.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
-
+        <action
+            android:id="@+id/action_mainFragment_to_messageDialog"
+            app:destination="@id/messageDialog" />
     </fragment>
+
+    <dialog
+        android:id="@+id/messageDialog"
+        android:name="com.github.mag0716.navigationsample.dialog.MessageDialogFragment" />
 
 </navigation>
