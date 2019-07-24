@@ -4,7 +4,7 @@
 
 ## 対象バージョン
 
-2.1.0-alpha06
+2.1.0-beta02
 
 ## TODO
 
@@ -40,6 +40,18 @@
 ## 更新履歴
 
 https://developer.android.com/jetpack/androidx/releases/navigation
+
+### 2.1.0-beta02
+
+* 2.1.0-beta01 で発生していた jacoco への依存を削除
+
+### 2.1.0-beta01
+
+`org.jacoco:org.jacoco.agent:0.8.3` に意図せず依存してビルドに失敗する
+
+#### New features
+
+* `NavigationUI#setupWithNavController()` を利用した場合に Up ボタンのアニメーションが追加された
 
 ### 2.1.0-alpha06
 
