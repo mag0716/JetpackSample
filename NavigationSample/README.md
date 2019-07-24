@@ -4,7 +4,12 @@
 
 ## 対象バージョン
 
-1.0.0-alpha07
+2.1.0-beta02
+
+## TODO
+
+* navgraphViewModels
+* dialog destination
 
 ## サンプル
 
@@ -35,6 +40,77 @@
 ## 更新履歴
 
 https://developer.android.com/jetpack/androidx/releases/navigation
+
+### 2.1.0-beta02
+
+* 2.1.0-beta01 で発生していた jacoco への依存を削除
+
+### 2.1.0-beta01
+
+`org.jacoco:org.jacoco.agent:0.8.3` に意図せず依存してビルドに失敗する
+
+#### New features
+
+* `NavigationUI#setupWithNavController()` を利用した場合に Up ボタンのアニメーションが追加された
+
+### 2.1.0-alpha06
+
+#### New features
+
+* `app:navGraph` が navigation-runtime に移動
+
+#### API changes
+
+* `NavController#getViewModelStore()` が deprecated になり、`getViewModelStoreOwner()` が追加された
+* `<dialog>` のような destination は `FloatingWindow` interface が生成され、AppBar　からの操作では無視される
+
+#### Behavior changes
+
+* `<dialog>` destination の場合に状態を正しく保持できるようになったので、自動でダイアログをポップするようになった
+
+### 2.1.0-alpha05
+
+#### API changes
+
+* `NavController` が `NavController`, `NavHostController` に分かれた
+* `setHostOnBackPressedDispatcherOwner` が `setOnBackPressedDispatcher` に置き換えられた
+* `setHostOnBackPressedDispatcherOwner` が返していた `NavHostONBackPressedManager` を置き換える `enableOnBackPressed` が追加された
+
+### 2.1.0-alpha04
+
+Bug fixes のみ
+2.1.0-alpha03 の Known Issues が直っている
+
+### 2.1.0-alpha03
+
+#### Known Issues
+
+* `app:defaultNavHost="false"` にしていても、バックキーをインターセプトしてしまう
+
+#### New features
+
+* `<dialog>` desitination
+* `<deepLink>` を利用して navigate で遷移できるように
+
+#### Behavior changes
+
+* アニメーションが 400ms から 220ms に短縮された
+
+#### API Changes
+
+* `NavHostFragment#createFragmentNavigator()` が deprecated になり `onCreateNavController()` が追加された
+* `NavDestination#hasDeepLink()` が追加された
+
+### 2.1.0-alpha02
+
+#### New features
+
+* `by navgraphViewModels()` で Navigation Graph ごとのスコープの ViewModel を取得できる
+
+#### API Changes
+
+* `<activity>` desitination に `app:targetPackage` を定義できるようになった
+  * `app:targetPackage="${appliationId}"` で自身のパッケージを指定できる
 
 ### 2.1.0-alpha01
 
