@@ -26,6 +26,7 @@
 | safeargs | Safe Args Plugin のサンプル(#33) | 1.0.0-alpha03 |
 | sharedelementtransition | [WIP] Fragment 間の遷移時に Shared Element Transition を利用するサンプル<br/>RecyclerView のセルからの遷移は上手くいかない | 1.0.0-alpha06 |
 | toolbar | Toolbar 単体で利用する Activity のサンプル(#33)<br/>argument を Toolbar のタイトルに利用している(#58) | 1.0.0-alpha03 |
+| dialog | Dialog への遷移、Dialog から遷移するサンプル(#24) | 2.1.0-beta02 |
 
 ### app
 
