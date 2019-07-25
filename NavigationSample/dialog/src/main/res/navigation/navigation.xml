@@ -14,8 +14,19 @@
             app:destination="@id/messageDialog" />
     </fragment>
 
+    <fragment
+        android:id="@+id/subFragment"
+        android:name="com.github.mag0716.navigationsample.dialog.SubFragment"
+        android:label="fragment_sub"
+        tools:layout="@layout/fragment_sub" />
+
     <dialog
         android:id="@+id/messageDialog"
-        android:name="com.github.mag0716.navigationsample.dialog.MessageDialogFragment" />
+        android:name="com.github.mag0716.navigationsample.dialog.MessageDialogFragment">
+        <action
+            android:id="@+id/action_messageDialog_to_subFragment"
+            app:destination="@id/subFragment" />
+    </dialog>
+
 
 </navigation>

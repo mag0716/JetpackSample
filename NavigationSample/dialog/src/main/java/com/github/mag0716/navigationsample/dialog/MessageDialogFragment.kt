@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 
 class MessageDialogFragment : DialogFragment() {
 
@@ -12,7 +13,9 @@ class MessageDialogFragment : DialogFragment() {
         return builder
                 .setTitle("Title")
                 .setMessage("Message")
-                .setPositiveButton("OK", null)
+                .setPositiveButton("OK") { _, _ ->
+                    findNavController().navigate(R.id.action_messageDialog_to_subFragment)
+                }
                 .create()
     }
 }
