@@ -12,13 +12,25 @@
         tools:layout="@layout/fragment_first">
         <action
             android:id="@+id/action_move_to_second"
-            app:destination="@id/second" />
+            app:destination="@id/nested_navigation_graph" />
     </fragment>
-
     <fragment
-        android:id="@+id/second"
-        android:name="com.github.mag0716.navigationsample.navgraphviewmodels.SecondFragment"
-        android:label="SecondFragment"
-        tools:layout="@layout/fragment_second" />
+        android:id="@+id/sub"
+        android:name="com.github.mag0716.navigationsample.navgraphviewmodels.SubFragment"
+        android:label="SubFragment"
+        tools:layout="@layout/fragment_sub" />
+    <navigation
+        android:id="@+id/nested_navigation_graph"
+        app:startDestination="@id/second">
+        <fragment
+            android:id="@+id/second"
+            android:name="com.github.mag0716.navigationsample.navgraphviewmodels.SecondFragment"
+            android:label="SecondFragment"
+            tools:layout="@layout/fragment_second">
+            <action
+                android:id="@+id/action_move_to_sub"
+                app:destination="@id/sub" />
+        </fragment>
+    </navigation>
 
 </navigation>
