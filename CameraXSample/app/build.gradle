@@ -33,5 +33,6 @@ dependencies {
     def camerax_version = "1.0.0-alpha04"
     implementation "androidx.camera:camera-core:${camerax_version}"
     implementation "androidx.camera:camera-camera2:${camerax_version}"
-    implementation project(":extensions")
+    def camerax_extensions_version = "1.0.0-alpha01"
+    implementation "androidx.camera:camera-extensions:${camerax_extensions_version}"
 }

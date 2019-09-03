@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.extensions.BokehImageCaptureExtender
+import androidx.camera.extensions.BokehPreviewExtender
+import androidx.camera.extensions.ExtensionsManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.File
@@ -54,7 +56,11 @@ class MainActivity : AppCompatActivity() {
             val file = File(externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
             imageCapture?.takePicture(file,
                 object : ImageCapture.OnImageSavedListener {
-                    override fun onError(useCaseError: ImageCapture.UseCaseError, message: String, cause: Throwable?) {
+                    override fun onError(
+                        useCaseError: ImageCapture.UseCaseError,
+                        message: String,
+                        cause: Throwable?
+                    ) {
                         val msg = "Photo capture failed : $message"
                         Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     }
@@ -67,7 +73,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (allPermissionsGranted()) {
                 viewFinder.post { startCamera() }
@@ -97,15 +107,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
+        Log.d(
+            TAG,
+            "${ExtensionsManager.isExtensionAvailable(
+                ExtensionsManager.EffectMode.BOKEH,
+                CameraX.LensFacing.BACK
+            )}"
+        )
+        // setup preview
         val viewFinderWidth = viewFinder.width
         val viewFinderHeight = viewFinder.height
         val aspectRatio = Rational(viewFinderWidth, viewFinderHeight)
-        val previewConfig = PreviewConfig.Builder().apply {
+
+        val previewConfigBuilder = PreviewConfig.Builder().apply {
             setLensFacing(CameraX.LensFacing.BACK)
             setTargetAspectRatio(aspectRatio)
             setTargetResolution(Size(viewFinderWidth, viewFinderHeight))
-        }.build()
-        val preview = Preview(previewConfig)
+        }
+        val bokehPreviewConfig = BokehPreviewExtender.create(previewConfigBuilder)
+        if (ExtensionsManager.isExtensionAvailable(
+                ExtensionsManager.EffectMode.BOKEH,
+                CameraX.LensFacing.BACK
+            )
+        ) {
+            bokehPreviewConfig.enableExtension()
+        }
+        Log.d(TAG, "PreviewConfig = $bokehPreviewConfig")
+        val preview = Preview(previewConfigBuilder.build())
 
         preview.setOnPreviewOutputUpdateListener {
             val parent = viewFinder.parent as ViewGroup
@@ -116,23 +144,17 @@ class MainActivity : AppCompatActivity() {
             updateTransform()
         }
 
+        // setup imagecapture
         val imageCaptureConfigBuilder = ImageCaptureConfig.Builder().apply {
             setLensFacing(CameraX.LensFacing.BACK)
             setTargetAspectRatio(aspectRatio)
             setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
         }
-        /**
-         * TODO:
-         * https://android.googlesource.com/platform/frameworks/support/+/9b9b6c0ba6fd5a8f3726395a5ff9a03505240fd9/camera/extensions/ を無理やり取り込んでみたが
-         * isExtensionAvailable が false になる
-         *
-         * 多分、extensions の効果を preview にも反映させるためには PreviewExtender を使う必要がある
-         */
-        val bokehImageCaptureConfig = BokehImageCaptureExtender(imageCaptureConfigBuilder)
-        Log.d(TAG, "${bokehImageCaptureConfig.isExtensionAvailable}")
+        val bokehImageCaptureConfig = BokehImageCaptureExtender.create(imageCaptureConfigBuilder)
         if (bokehImageCaptureConfig.isExtensionAvailable) {
             bokehImageCaptureConfig.enableExtension()
         }
+        Log.d(TAG, "ImageCaptureConfig = $bokehImageCaptureConfig")
         imageCapture = ImageCapture(imageCaptureConfigBuilder.build())
 
         CameraX.bindToLifecycle(this, preview, imageCapture)
