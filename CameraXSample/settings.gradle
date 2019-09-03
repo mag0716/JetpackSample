@@ -1,2 +1,2 @@
-include ':app', ':extensions'
-rootProject.name='CameraXExtensionSample'
+include ':app'
+rootProject.name = 'CameraXExtensionSample'
