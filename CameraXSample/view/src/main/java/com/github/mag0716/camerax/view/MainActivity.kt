@@ -5,9 +5,9 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.view.CameraView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.github.mag0716.camerax.view.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,13 +16,12 @@ class MainActivity : AppCompatActivity() {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
-    private lateinit var cameraView: CameraView
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
-
-        cameraView = findViewById(R.id.camera_view)
 
         if (allPermissionsGranted()) {
             initCamera()
@@ -69,6 +68,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initCamera() {
-        cameraView.bindToLifecycle(this)
+        binding.cameraView.bindToLifecycle(this)
     }
 }
