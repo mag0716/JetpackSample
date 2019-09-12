@@ -3,15 +3,20 @@ package com.github.mag0716.camerax.view
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.ImageCapture
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.github.mag0716.camerax.view.databinding.ActivityMainBinding
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
+        private const val TAG = "CameraXSample(View)"
         private const val REQUEST_CAMERA_PERMISSION = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
@@ -69,5 +74,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun initCamera() {
         binding.cameraView.bindToLifecycle(this)
+        val outputDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        if (outputDirectory != null && outputDirectory.exists()) {
+            Log.d(TAG, "output directory : ${outputDirectory.path}")
+            val outputFile =
+                File("${outputDirectory.path}/output_${System.currentTimeMillis()}.png")
+            binding.captureButton.setOnClickListener {
+                binding.cameraView.takePicture(
+                    outputFile,
+                    object : ImageCapture.OnImageSavedListener {
+                        override fun onImageSaved(file: File) {
+                            Log.d(TAG, "onImageSaved : ${file.path}")
+                        }
+
+                        override fun onError(
+                            useCaseError: ImageCapture.UseCaseError,
+                            message: String,
+                            cause: Throwable?
+                        ) {
+                            Log.e(TAG, "onError : $message", cause)
+                        }
+
+                    })
+            }
+        }
     }
 }
