@@ -5,9 +5,11 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageCapture
+import androidx.camera.view.CameraView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.github.mag0716.camerax.view.databinding.ActivityMainBinding
@@ -22,11 +24,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var cameraView: CameraView
+    private lateinit var captureButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        //binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
+
+        cameraView = findViewById(R.id.camera_view)
+        captureButton = findViewById(R.id.capture_button)
 
         if (allPermissionsGranted()) {
             initCamera()
@@ -73,14 +80,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initCamera() {
-        binding.cameraView.bindToLifecycle(this)
+        cameraView.bindToLifecycle(this)
         val outputDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         if (outputDirectory != null && outputDirectory.exists()) {
             Log.d(TAG, "output directory : ${outputDirectory.path}")
             val outputFile =
                 File("${outputDirectory.path}/output_${System.currentTimeMillis()}.png")
-            binding.captureButton.setOnClickListener {
-                binding.cameraView.takePicture(
+            captureButton.setOnClickListener {
+                cameraView.takePicture(
                     outputFile,
                     object : ImageCapture.OnImageSavedListener {
                         override fun onImageSaved(file: File) {
