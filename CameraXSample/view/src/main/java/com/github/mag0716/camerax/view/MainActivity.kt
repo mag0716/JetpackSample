@@ -3,7 +3,6 @@ package com.github.mag0716.camerax.view
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
@@ -81,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initCamera() {
         cameraView.bindToLifecycle(this)
-        val outputDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val outputDirectory = filesDir
         if (outputDirectory != null && outputDirectory.exists()) {
             Log.d(TAG, "output directory : ${outputDirectory.path}")
             val outputFile =
