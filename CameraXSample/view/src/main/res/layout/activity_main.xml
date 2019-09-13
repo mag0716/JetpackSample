@@ -8,12 +8,22 @@
 
     <androidx.camera.view.CameraView
         android:id="@+id/camera_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:layout_constraintBottom_toTopOf="@id/capture_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/change_lens_facing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/capture_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/camera_view"
+        tools:text="Back" />
 
     <Button
         android:id="@+id/capture_button"
@@ -23,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/camera_view" />
+        app:layout_constraintTop_toBottomOf="@id/change_lens_facing" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

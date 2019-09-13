@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraX
 import androidx.camera.core.ImageCapture
 import androidx.camera.view.CameraView
 import androidx.core.app.ActivityCompat
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var cameraView: CameraView
+    private lateinit var changeLensFacingButton: Button
     private lateinit var captureButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         cameraView = findViewById(R.id.camera_view)
+        changeLensFacingButton = findViewById(R.id.change_lens_facing)
         captureButton = findViewById(R.id.capture_button)
 
         if (allPermissionsGranted()) {
@@ -80,6 +83,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initCamera() {
         cameraView.bindToLifecycle(this)
+        updateChangeLensFacingButtonText()
+        changeLensFacingButton.setOnClickListener {
+            changeLensFacing()
+        }
         val outputDirectory = filesDir
         if (outputDirectory != null && outputDirectory.exists()) {
             Log.d(TAG, "output directory : ${outputDirectory.path}")
@@ -104,5 +111,23 @@ class MainActivity : AppCompatActivity() {
                     })
             }
         }
+    }
+
+    private fun updateChangeLensFacingButtonText() {
+        changeLensFacingButton.text =
+            when (cameraView.cameraLensFacing) {
+                CameraX.LensFacing.FRONT -> CameraX.LensFacing.BACK.name
+                CameraX.LensFacing.BACK -> CameraX.LensFacing.FRONT.name
+                else -> ""
+            }
+    }
+
+    private fun changeLensFacing() {
+        cameraView.cameraLensFacing = when (cameraView.cameraLensFacing) {
+            CameraX.LensFacing.FRONT -> CameraX.LensFacing.BACK
+            CameraX.LensFacing.BACK -> CameraX.LensFacing.FRONT
+            else -> CameraX.LensFacing.BACK
+        }
+        updateChangeLensFacingButtonText()
     }
 }
