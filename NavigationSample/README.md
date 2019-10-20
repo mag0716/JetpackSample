@@ -4,12 +4,9 @@
 
 ## 対象バージョン
 
-2.1.0-beta02
+2.2.0-beta01
 
 ## TODO
-
-* navgraphViewModels
-* dialog destination
 
 ## サンプル
 
@@ -27,6 +24,7 @@
 | sharedelementtransition | [WIP] Fragment 間の遷移時に Shared Element Transition を利用するサンプル<br/>RecyclerView のセルからの遷移は上手くいかない | 1.0.0-alpha06 |
 | toolbar | Toolbar 単体で利用する Activity のサンプル(#33)<br/>argument を Toolbar のタイトルに利用している(#58) | 1.0.0-alpha03 |
 | dialog | Dialog への遷移、Dialog から遷移するサンプル(#24) | 2.1.0-beta02 |
+| navgraphviewmodels | Navigation Graph で共有する ViewModels (#23)<br/>2.2.0 から SavedStateHandle にも対応(#27) | 2.1.0-rc01 |
 
 ### app
 
@@ -41,6 +39,26 @@
 ## 更新履歴
 
 https://developer.android.com/jetpack/androidx/releases/navigation
+
+### [2.2.0-beta01](https://developer.android.com/jetpack/androidx/releases/navigation#2.2.0-beta01)
+
+* `NavDestination` のサブクラスで `toString` をオーバーライドできるようになった
+* マッチしない deep link を無視するようになった
+
+### [2.2.0-alpha03](https://developer.android.com/jetpack/androidx/releases/navigation#2.2.0-alpha03)
+
+* `setGraph` の後に `setViewModelStore` を呼び出したら `IllegalStateException` になるように変更された
+
+### [2.2.0-alpha02](https://developer.android.com/jetpack/androidx/releases/navigation#2.2.0-alpha02)
+
+* deep link のパラメータのデフォルト値や nullable にサポート
+* `NavController.getBackStackEntry()` でバックスタックの ID や NavigationGraph を渡せるようになった
+
+### [2.2.0-alpha01](https://developer.android.com/jetpack/androidx/releases/navigation#2.2.0-alpha01)
+
+* `SavedStateViewModelFactory` がデフォルトで利用されるようになった
+  * Navigation Graph スコープの ViewModel が SavedState をサポートしてくれる
+* `NavController#getViewModelStore()` が deprecated になった
 
 ### 2.1.0-beta02
 
