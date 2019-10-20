@@ -25,8 +25,8 @@ class FirstFragment : androidx.fragment.app.Fragment() {
         super.onViewCreated(view, savedInstanceState)
         button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_move_to_second))
         countButton.setOnClickListener {
-            activityScopeViewModel.count++
-            navGraphScopeViewModel.count++
+            activityScopeViewModel.increment()
+            navGraphScopeViewModel.increment()
             updateText()
         }
         updateText()
