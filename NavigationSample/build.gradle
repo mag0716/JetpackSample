@@ -10,6 +10,9 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://ci.android.com/builds/submitted/6155760/androidx_snapshot/latest/repository/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
@@ -25,6 +28,9 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://ci.android.com/builds/submitted/6155760/androidx_snapshot/latest/repository/"
+        }
     }
 }
 
