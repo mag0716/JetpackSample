@@ -11,6 +11,14 @@
         android:name="com.github.mag0716.navigationsample.dynamicfeaturemodule.FirstFragment"
         android:label="FirstFragment"
         tools:layout="@layout/fragment_first">
-
+        <action
+            android:id="@+id/moveDynamicFeatureModule"
+            app:destination="@id/dynamicFirst" />
     </fragment>
+
+    <fragment
+        android:id="@+id/dynamicFirst"
+        android:name="com.github.mag0716.navigationsample.testmodule.DynamicFirstFragment"
+        android:label="FirstFragment(Dynamic Feature Module)" />
+
 </navigation>
