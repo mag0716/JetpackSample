@@ -2,18 +2,16 @@ package com.github.mag0716.camerax.extension
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Matrix
 import android.os.Bundle
-import android.util.Size
-import android.view.Surface
-import android.view.TextureView
-import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.common.util.concurrent.ListenableFuture
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -27,7 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     private val executor = Executors.newSingleThreadExecutor()
 
-    private lateinit var viewFinder: TextureView
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+    private lateinit var previewView: PreviewView
     private lateinit var captureButton: ImageButton
 
     private var imageCapture: ImageCapture? = null
@@ -35,11 +34,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewFinder = findViewById(R.id.view_finder)
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        previewView = findViewById(R.id.previewView)
         captureButton = findViewById(R.id.capture_button)
 
         if (allPermissionsGranted()) {
-            viewFinder.post { startCamera() }
+            previewView.post { startCamera() }
         } else {
             ActivityCompat.requestPermissions(
                 this,
@@ -47,26 +47,27 @@ class MainActivity : AppCompatActivity() {
                 REQUEST_CAMERA_PERMISSION
             )
         }
-        viewFinder.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            updateTransform()
-        }
         captureButton.setOnClickListener {
             val file = File(externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
             imageCapture?.takePicture(file,
                 executor,
-                object : ImageCapture.OnImageSavedListener {
+                object : ImageCapture.OnImageSavedCallback {
                     override fun onImageSaved(file: File) {
                         val msg = "Photo capture succeeded: ${file.absolutePath}"
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                        previewView.post {
+                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                     override fun onError(
-                        imageCaptureError: ImageCapture.ImageCaptureError,
+                        imageCaptureError: Int,
                         message: String,
                         cause: Throwable?
                     ) {
                         val msg = "Photo capture failed : $message"
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                        previewView.post {
+                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 })
         }
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (allPermissionsGranted()) {
-                viewFinder.post { startCamera() }
+                previewView.post { startCamera() }
             } else {
                 Toast.makeText(
                     this,
@@ -113,14 +114,8 @@ class MainActivity : AppCompatActivity() {
 //                CameraX.LensFacing.BACK
 //            )}"
 //        )
-        // setup preview
-        val viewFinderWidth = viewFinder.width
-        val viewFinderHeight = viewFinder.height
 
-        val previewConfigBuilder = PreviewConfig.Builder().apply {
-            setLensFacing(CameraX.LensFacing.BACK)
-            setTargetResolution(Size(viewFinderWidth, viewFinderHeight))
-        }
+        // setup preview
 //        val bokehPreviewConfig = BokehPreviewExtender.create(previewConfigBuilder)
 //        if (ExtensionsManager.isExtensionAvailable(
 //                ExtensionsManager.EffectMode.BOKEH,
@@ -130,44 +125,28 @@ class MainActivity : AppCompatActivity() {
 //            bokehPreviewConfig.enableExtension()
 //        }
 //        Log.d(TAG, "PreviewConfig = $bokehPreviewConfig")
-        val preview = Preview(previewConfigBuilder.build())
-
-        preview.setOnPreviewOutputUpdateListener {
-            val parent = viewFinder.parent as ViewGroup
-            parent.removeView(viewFinder)
-            parent.addView(viewFinder, 0)
-
-            viewFinder.surfaceTexture = it.surfaceTexture
-            updateTransform()
-        }
+        val preview = Preview.Builder().apply {
+            setTargetAspectRatio(AspectRatio.RATIO_16_9)
+        }.build()
+        preview.setPreviewSurfaceProvider(previewView.previewSurfaceProvider)
 
         // setup imagecapture
-        val imageCaptureConfigBuilder = ImageCaptureConfig.Builder().apply {
-            setLensFacing(CameraX.LensFacing.BACK)
-            setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
-        }
 //        val bokehImageCaptureConfig = BokehImageCaptureExtender.create(imageCaptureConfigBuilder)
 //        if (bokehImageCaptureConfig.isExtensionAvailable) {
 //            bokehImageCaptureConfig.enableExtension()
 //        }
 //        Log.d(TAG, "ImageCaptureConfig = $bokehImageCaptureConfig")
-        imageCapture = ImageCapture(imageCaptureConfigBuilder.build())
+        imageCapture = ImageCapture.Builder().apply {
+            setCaptureMode(ImageCapture.CaptureMode.MINIMIZE_LATENCY)
+        }.build()
 
-        CameraX.bindToLifecycle(this, preview, imageCapture)
-    }
-
-    private fun updateTransform() {
-        val matrix = Matrix()
-        val centerX = viewFinder.width / 2f
-        val centerY = viewFinder.height / 2f
-        val rotationDegrees = when (viewFinder.display.rotation) {
-            Surface.ROTATION_0 -> 0
-            Surface.ROTATION_90 -> 90
-            Surface.ROTATION_180 -> 180
-            Surface.ROTATION_270 -> 270
-            else -> return
-        }
-        matrix.postRotate(-rotationDegrees.toFloat(), centerX, centerY)
-        viewFinder.setTransform(matrix)
+        val cameraProvider = cameraProviderFuture.get()
+        val cameraSelector = CameraSelector.Builder().requireLensFacing(LensFacing.BACK).build()
+        cameraProvider.bindToLifecycle(
+            this,
+            cameraSelector,
+            preview,
+            imageCapture
+        )
     }
 }
