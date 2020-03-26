@@ -4,8 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Matrix
 import android.os.Bundle
-import android.util.Log
-import android.util.Rational
 import android.util.Size
 import android.view.Surface
 import android.view.TextureView
@@ -14,12 +12,10 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
-import androidx.camera.extensions.BokehImageCaptureExtender
-import androidx.camera.extensions.BokehPreviewExtender
-import androidx.camera.extensions.ExtensionsManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.File
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CAMERA_PERMISSION = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
+
+    private val executor = Executors.newSingleThreadExecutor()
 
     private lateinit var viewFinder: TextureView
     private lateinit var captureButton: ImageButton
@@ -55,18 +53,19 @@ class MainActivity : AppCompatActivity() {
         captureButton.setOnClickListener {
             val file = File(externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
             imageCapture?.takePicture(file,
+                executor,
                 object : ImageCapture.OnImageSavedListener {
+                    override fun onImageSaved(file: File) {
+                        val msg = "Photo capture succeeded: ${file.absolutePath}"
+                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    }
+
                     override fun onError(
-                        useCaseError: ImageCapture.UseCaseError,
+                        imageCaptureError: ImageCapture.ImageCaptureError,
                         message: String,
                         cause: Throwable?
                     ) {
                         val msg = "Photo capture failed : $message"
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onImageSaved(file: File) {
-                        val msg = "Photo capture succeeded: ${file.absolutePath}"
                         Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     }
                 })
@@ -107,32 +106,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        Log.d(
-            TAG,
-            "${ExtensionsManager.isExtensionAvailable(
-                ExtensionsManager.EffectMode.BOKEH,
-                CameraX.LensFacing.BACK
-            )}"
-        )
+//        Log.d(
+//            TAG,
+//            "${ExtensionsManager.isExtensionAvailable(
+//                ExtensionsManager.EffectMode.BOKEH,
+//                CameraX.LensFacing.BACK
+//            )}"
+//        )
         // setup preview
         val viewFinderWidth = viewFinder.width
         val viewFinderHeight = viewFinder.height
-        val aspectRatio = Rational(viewFinderWidth, viewFinderHeight)
 
         val previewConfigBuilder = PreviewConfig.Builder().apply {
             setLensFacing(CameraX.LensFacing.BACK)
-            setTargetAspectRatio(aspectRatio)
             setTargetResolution(Size(viewFinderWidth, viewFinderHeight))
         }
-        val bokehPreviewConfig = BokehPreviewExtender.create(previewConfigBuilder)
-        if (ExtensionsManager.isExtensionAvailable(
-                ExtensionsManager.EffectMode.BOKEH,
-                CameraX.LensFacing.BACK
-            )
-        ) {
-            bokehPreviewConfig.enableExtension()
-        }
-        Log.d(TAG, "PreviewConfig = $bokehPreviewConfig")
+//        val bokehPreviewConfig = BokehPreviewExtender.create(previewConfigBuilder)
+//        if (ExtensionsManager.isExtensionAvailable(
+//                ExtensionsManager.EffectMode.BOKEH,
+//                CameraX.LensFacing.BACK
+//            )
+//        ) {
+//            bokehPreviewConfig.enableExtension()
+//        }
+//        Log.d(TAG, "PreviewConfig = $bokehPreviewConfig")
         val preview = Preview(previewConfigBuilder.build())
 
         preview.setOnPreviewOutputUpdateListener {
@@ -147,14 +144,13 @@ class MainActivity : AppCompatActivity() {
         // setup imagecapture
         val imageCaptureConfigBuilder = ImageCaptureConfig.Builder().apply {
             setLensFacing(CameraX.LensFacing.BACK)
-            setTargetAspectRatio(aspectRatio)
             setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
         }
-        val bokehImageCaptureConfig = BokehImageCaptureExtender.create(imageCaptureConfigBuilder)
-        if (bokehImageCaptureConfig.isExtensionAvailable) {
-            bokehImageCaptureConfig.enableExtension()
-        }
-        Log.d(TAG, "ImageCaptureConfig = $bokehImageCaptureConfig")
+//        val bokehImageCaptureConfig = BokehImageCaptureExtender.create(imageCaptureConfigBuilder)
+//        if (bokehImageCaptureConfig.isExtensionAvailable) {
+//            bokehImageCaptureConfig.enableExtension()
+//        }
+//        Log.d(TAG, "ImageCaptureConfig = $bokehImageCaptureConfig")
         imageCapture = ImageCapture(imageCaptureConfigBuilder.build())
 
         CameraX.bindToLifecycle(this, preview, imageCapture)
