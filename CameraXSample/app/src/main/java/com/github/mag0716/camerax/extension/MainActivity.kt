@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.*
+import androidx.camera.core.AspectRatio
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
@@ -137,11 +140,12 @@ class MainActivity : AppCompatActivity() {
 //        }
 //        Log.d(TAG, "ImageCaptureConfig = $bokehImageCaptureConfig")
         imageCapture = ImageCapture.Builder().apply {
-            setCaptureMode(ImageCapture.CaptureMode.MINIMIZE_LATENCY)
+            setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
         }.build()
 
         val cameraProvider = cameraProviderFuture.get()
-        val cameraSelector = CameraSelector.Builder().requireLensFacing(LensFacing.BACK).build()
+        val cameraSelector =
+            CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
         cameraProvider.bindToLifecycle(
             this,
             cameraSelector,

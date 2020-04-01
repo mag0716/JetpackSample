@@ -6,6 +6,6 @@ import androidx.camera.core.CameraXConfig
 
 class App : Application(), CameraXConfig.Provider {
     override fun getCameraXConfig(): CameraXConfig {
-        return Camera2Config.defaultConfig(this)
+        return Camera2Config.defaultConfig()
     }
 }
