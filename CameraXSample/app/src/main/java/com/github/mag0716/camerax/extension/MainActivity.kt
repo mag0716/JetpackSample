@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.AspectRatio
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
@@ -52,22 +49,20 @@ class MainActivity : AppCompatActivity() {
         }
         captureButton.setOnClickListener {
             val file = File(externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
-            imageCapture?.takePicture(file,
+            val outputOptions = ImageCapture.OutputFileOptions.Builder(file)
+                .build()
+            imageCapture?.takePicture(outputOptions,
                 executor,
                 object : ImageCapture.OnImageSavedCallback {
-                    override fun onImageSaved(file: File) {
+                    override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                         val msg = "Photo capture succeeded: ${file.absolutePath}"
                         previewView.post {
                             Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                         }
                     }
 
-                    override fun onError(
-                        imageCaptureError: Int,
-                        message: String,
-                        cause: Throwable?
-                    ) {
-                        val msg = "Photo capture failed : $message"
+                    override fun onError(exception: ImageCaptureException) {
+                        val msg = "Photo capture failed : $exception"
                         previewView.post {
                             Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                         }
@@ -131,7 +126,7 @@ class MainActivity : AppCompatActivity() {
         val preview = Preview.Builder().apply {
             setTargetAspectRatio(AspectRatio.RATIO_16_9)
         }.build()
-        preview.setPreviewSurfaceProvider(previewView.previewSurfaceProvider)
+        preview.setSurfaceProvider(previewView.previewSurfaceProvider)
 
         // setup imagecapture
 //        val bokehImageCaptureConfig = BokehImageCaptureExtender.create(imageCaptureConfigBuilder)
