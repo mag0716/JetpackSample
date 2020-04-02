@@ -118,8 +118,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateChangeLensFacingButtonText() {
         changeLensFacingButton.text =
             when (cameraView.cameraLensFacing) {
-                CameraSelector.LENS_FACING_FRONT -> CameraSelector.LENS_FACING_BACK.toString()
-                CameraSelector.LENS_FACING_BACK -> CameraSelector.LENS_FACING_FRONT.toString()
+                CameraSelector.LENS_FACING_FRONT -> "BACK"
+                CameraSelector.LENS_FACING_BACK -> "FRONT"
                 else -> ""
             }
     }
