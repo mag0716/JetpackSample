@@ -7,13 +7,15 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraX
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.view.CameraView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.github.mag0716.camerax.view.databinding.ActivityMainBinding
 import java.io.File
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_CAMERA_PERMISSION = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
+
+    private val executor = Executors.newSingleThreadExecutor()
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var cameraView: CameraView
@@ -95,19 +99,17 @@ class MainActivity : AppCompatActivity() {
             captureButton.setOnClickListener {
                 cameraView.takePicture(
                     outputFile,
-                    object : ImageCapture.OnImageSavedListener {
-                        override fun onImageSaved(file: File) {
-                            Log.d(TAG, "onImageSaved : ${file.path}")
+                    executor,
+                    object : ImageCapture.OnImageSavedCallback {
+                        override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                            val msg = "Photo capture succeeded: ${outputFile.absolutePath}"
+                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                         }
 
-                        override fun onError(
-                            useCaseError: ImageCapture.UseCaseError,
-                            message: String,
-                            cause: Throwable?
-                        ) {
-                            Log.e(TAG, "onError : $message", cause)
+                        override fun onError(exception: ImageCaptureException) {
+                            val msg = "Photo capture failed : $exception"
+                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                         }
-
                     })
             }
         }
@@ -116,17 +118,17 @@ class MainActivity : AppCompatActivity() {
     private fun updateChangeLensFacingButtonText() {
         changeLensFacingButton.text =
             when (cameraView.cameraLensFacing) {
-                CameraX.LensFacing.FRONT -> CameraX.LensFacing.BACK.name
-                CameraX.LensFacing.BACK -> CameraX.LensFacing.FRONT.name
+                CameraSelector.LENS_FACING_FRONT -> "BACK"
+                CameraSelector.LENS_FACING_BACK -> "FRONT"
                 else -> ""
             }
     }
 
     private fun changeLensFacing() {
         cameraView.cameraLensFacing = when (cameraView.cameraLensFacing) {
-            CameraX.LensFacing.FRONT -> CameraX.LensFacing.BACK
-            CameraX.LensFacing.BACK -> CameraX.LensFacing.FRONT
-            else -> CameraX.LensFacing.BACK
+            CameraSelector.LENS_FACING_FRONT -> CameraSelector.LENS_FACING_BACK
+            CameraSelector.LENS_FACING_BACK -> CameraSelector.LENS_FACING_FRONT
+            else -> CameraSelector.LENS_FACING_BACK
         }
         updateChangeLensFacingButtonText()
     }

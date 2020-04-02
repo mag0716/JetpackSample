@@ -1,2 +1,3 @@
 include ':app', ':view'
 rootProject.name = 'CameraXExtensionSample'
+include ':codelab'

@@ -2,24 +2,18 @@ package com.github.mag0716.camerax.extension
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Matrix
 import android.os.Bundle
-import android.util.Log
-import android.util.Rational
-import android.util.Size
-import android.view.Surface
-import android.view.TextureView
-import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
-import androidx.camera.extensions.BokehImageCaptureExtender
-import androidx.camera.extensions.BokehPreviewExtender
-import androidx.camera.extensions.ExtensionsManager
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.common.util.concurrent.ListenableFuture
 import java.io.File
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,19 +23,25 @@ class MainActivity : AppCompatActivity() {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
-    private lateinit var viewFinder: TextureView
+    private val executor = Executors.newSingleThreadExecutor()
+
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+    private lateinit var previewView: PreviewView
     private lateinit var captureButton: ImageButton
 
+    private var camera: Camera? = null
     private var imageCapture: ImageCapture? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewFinder = findViewById(R.id.view_finder)
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        previewView = findViewById(R.id.previewView)
+        previewView.preferredImplementationMode = PreviewView.ImplementationMode.TEXTURE_VIEW
         captureButton = findViewById(R.id.capture_button)
 
         if (allPermissionsGranted()) {
-            viewFinder.post { startCamera() }
+            previewView.post { startCamera() }
         } else {
             ActivityCompat.requestPermissions(
                 this,
@@ -49,25 +49,25 @@ class MainActivity : AppCompatActivity() {
                 REQUEST_CAMERA_PERMISSION
             )
         }
-        viewFinder.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            updateTransform()
-        }
         captureButton.setOnClickListener {
             val file = File(externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
-            imageCapture?.takePicture(file,
-                object : ImageCapture.OnImageSavedListener {
-                    override fun onError(
-                        useCaseError: ImageCapture.UseCaseError,
-                        message: String,
-                        cause: Throwable?
-                    ) {
-                        val msg = "Photo capture failed : $message"
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            val outputOptions = ImageCapture.OutputFileOptions.Builder(file)
+                .build()
+            imageCapture?.takePicture(outputOptions,
+                executor,
+                object : ImageCapture.OnImageSavedCallback {
+                    override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                        val msg = "Photo capture succeeded: ${file.absolutePath}"
+                        previewView.post {
+                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                        }
                     }
 
-                    override fun onImageSaved(file: File) {
-                        val msg = "Photo capture succeeded: ${file.absolutePath}"
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    override fun onError(exception: ImageCaptureException) {
+                        val msg = "Photo capture failed : $exception"
+                        previewView.post {
+                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 })
         }
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (allPermissionsGranted()) {
-                viewFinder.post { startCamera() }
+                previewView.post { startCamera() }
             } else {
                 Toast.makeText(
                     this,
@@ -107,71 +107,49 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        Log.d(
-            TAG,
-            "${ExtensionsManager.isExtensionAvailable(
-                ExtensionsManager.EffectMode.BOKEH,
-                CameraX.LensFacing.BACK
-            )}"
-        )
+//        Log.d(
+//            TAG,
+//            "${ExtensionsManager.isExtensionAvailable(
+//                ExtensionsManager.EffectMode.BOKEH,
+//                CameraX.LensFacing.BACK
+//            )}"
+//        )
+
         // setup preview
-        val viewFinderWidth = viewFinder.width
-        val viewFinderHeight = viewFinder.height
-        val aspectRatio = Rational(viewFinderWidth, viewFinderHeight)
-
-        val previewConfigBuilder = PreviewConfig.Builder().apply {
-            setLensFacing(CameraX.LensFacing.BACK)
-            setTargetAspectRatio(aspectRatio)
-            setTargetResolution(Size(viewFinderWidth, viewFinderHeight))
-        }
-        val bokehPreviewConfig = BokehPreviewExtender.create(previewConfigBuilder)
-        if (ExtensionsManager.isExtensionAvailable(
-                ExtensionsManager.EffectMode.BOKEH,
-                CameraX.LensFacing.BACK
-            )
-        ) {
-            bokehPreviewConfig.enableExtension()
-        }
-        Log.d(TAG, "PreviewConfig = $bokehPreviewConfig")
-        val preview = Preview(previewConfigBuilder.build())
-
-        preview.setOnPreviewOutputUpdateListener {
-            val parent = viewFinder.parent as ViewGroup
-            parent.removeView(viewFinder)
-            parent.addView(viewFinder, 0)
-
-            viewFinder.surfaceTexture = it.surfaceTexture
-            updateTransform()
-        }
+//        val bokehPreviewConfig = BokehPreviewExtender.create(previewConfigBuilder)
+//        if (ExtensionsManager.isExtensionAvailable(
+//                ExtensionsManager.EffectMode.BOKEH,
+//                CameraX.LensFacing.BACK
+//            )
+//        ) {
+//            bokehPreviewConfig.enableExtension()
+//        }
+//        Log.d(TAG, "PreviewConfig = $bokehPreviewConfig")
+        val preview = Preview.Builder().apply {
+            setTargetAspectRatio(AspectRatio.RATIO_16_9)
+        }.build()
+        preview.setSurfaceProvider(
+            previewView.createSurfaceProvider(camera?.cameraInfo)
+        )
 
         // setup imagecapture
-        val imageCaptureConfigBuilder = ImageCaptureConfig.Builder().apply {
-            setLensFacing(CameraX.LensFacing.BACK)
-            setTargetAspectRatio(aspectRatio)
-            setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY)
-        }
-        val bokehImageCaptureConfig = BokehImageCaptureExtender.create(imageCaptureConfigBuilder)
-        if (bokehImageCaptureConfig.isExtensionAvailable) {
-            bokehImageCaptureConfig.enableExtension()
-        }
-        Log.d(TAG, "ImageCaptureConfig = $bokehImageCaptureConfig")
-        imageCapture = ImageCapture(imageCaptureConfigBuilder.build())
+//        val bokehImageCaptureConfig = BokehImageCaptureExtender.create(imageCaptureConfigBuilder)
+//        if (bokehImageCaptureConfig.isExtensionAvailable) {
+//            bokehImageCaptureConfig.enableExtension()
+//        }
+//        Log.d(TAG, "ImageCaptureConfig = $bokehImageCaptureConfig")
+        imageCapture = ImageCapture.Builder().apply {
+            setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+        }.build()
 
-        CameraX.bindToLifecycle(this, preview, imageCapture)
-    }
-
-    private fun updateTransform() {
-        val matrix = Matrix()
-        val centerX = viewFinder.width / 2f
-        val centerY = viewFinder.height / 2f
-        val rotationDegrees = when (viewFinder.display.rotation) {
-            Surface.ROTATION_0 -> 0
-            Surface.ROTATION_90 -> 90
-            Surface.ROTATION_180 -> 180
-            Surface.ROTATION_270 -> 270
-            else -> return
-        }
-        matrix.postRotate(-rotationDegrees.toFloat(), centerX, centerY)
-        viewFinder.setTransform(matrix)
+        val cameraProvider = cameraProviderFuture.get()
+        val cameraSelector =
+            CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+        camera = cameraProvider.bindToLifecycle(
+            this,
+            cameraSelector,
+            preview,
+            imageCapture
+        )
     }
 }
