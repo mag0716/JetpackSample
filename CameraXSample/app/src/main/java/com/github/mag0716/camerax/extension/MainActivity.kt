@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var previewView: PreviewView
     private lateinit var captureButton: ImageButton
 
+    private var camera: Camera? = null
     private var imageCapture: ImageCapture? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         previewView = findViewById(R.id.previewView)
+        previewView.preferredImplementationMode = PreviewView.ImplementationMode.TEXTURE_VIEW
         captureButton = findViewById(R.id.capture_button)
 
         if (allPermissionsGranted()) {
@@ -126,7 +128,9 @@ class MainActivity : AppCompatActivity() {
         val preview = Preview.Builder().apply {
             setTargetAspectRatio(AspectRatio.RATIO_16_9)
         }.build()
-        preview.setSurfaceProvider(previewView.previewSurfaceProvider)
+        preview.setSurfaceProvider(
+            previewView.createSurfaceProvider(camera?.cameraInfo)
+        )
 
         // setup imagecapture
 //        val bokehImageCaptureConfig = BokehImageCaptureExtender.create(imageCaptureConfigBuilder)
@@ -141,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         val cameraProvider = cameraProviderFuture.get()
         val cameraSelector =
             CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
-        cameraProvider.bindToLifecycle(
+        camera = cameraProvider.bindToLifecycle(
             this,
             cameraSelector,
             preview,
