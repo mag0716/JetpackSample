@@ -3,10 +3,14 @@ package com.github.mag0716.camerax.extension
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
+import androidx.camera.extensions.BeautyPreviewExtender
+import androidx.camera.extensions.BokehPreviewExtender
+import androidx.camera.extensions.HdrPreviewExtender
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
@@ -107,49 +111,55 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-//        Log.d(
-//            TAG,
-//            "${ExtensionsManager.isExtensionAvailable(
-//                ExtensionsManager.EffectMode.BOKEH,
-//                CameraX.LensFacing.BACK
-//            )}"
-//        )
+        val cameraSelector =
+            CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build()
 
         // setup preview
-//        val bokehPreviewConfig = BokehPreviewExtender.create(previewConfigBuilder)
-//        if (ExtensionsManager.isExtensionAvailable(
-//                ExtensionsManager.EffectMode.BOKEH,
-//                CameraX.LensFacing.BACK
-//            )
-//        ) {
-//            bokehPreviewConfig.enableExtension()
-//        }
-//        Log.d(TAG, "PreviewConfig = $bokehPreviewConfig")
-        val preview = Preview.Builder().apply {
+        val previewBuilder = Preview.Builder().apply {
             setTargetAspectRatio(AspectRatio.RATIO_16_9)
-        }.build()
+        }
+        checkExtensionAvailability(previewBuilder, cameraSelector)
+        val bokehPreviewExtender = BokehPreviewExtender.create(previewBuilder)
+        if (bokehPreviewExtender.isExtensionAvailable(cameraSelector)) {
+            Log.d(TAG, "Bokeh is available.")
+            bokehPreviewExtender.enableExtension(cameraSelector)
+        }
+        val preview = previewBuilder.build()
         preview.setSurfaceProvider(
             previewView.createSurfaceProvider(camera?.cameraInfo)
         )
 
         // setup imagecapture
-//        val bokehImageCaptureConfig = BokehImageCaptureExtender.create(imageCaptureConfigBuilder)
-//        if (bokehImageCaptureConfig.isExtensionAvailable) {
-//            bokehImageCaptureConfig.enableExtension()
-//        }
-//        Log.d(TAG, "ImageCaptureConfig = $bokehImageCaptureConfig")
         imageCapture = ImageCapture.Builder().apply {
             setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
         }.build()
 
         val cameraProvider = cameraProviderFuture.get()
-        val cameraSelector =
-            CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
         camera = cameraProvider.bindToLifecycle(
             this,
             cameraSelector,
             preview,
             imageCapture
+        )
+    }
+
+    private fun checkExtensionAvailability(
+        previewBuilder: Preview.Builder,
+        cameraSelector: CameraSelector
+    ) {
+        val bokehPreviewExtender = BokehPreviewExtender.create(previewBuilder)
+        val hdrPreviewExtender = HdrPreviewExtender.create(previewBuilder)
+        val beautyPreviewExtender = BeautyPreviewExtender.create(previewBuilder)
+
+        Log.d(
+            TAG,
+            """
+                bokeh : ${bokehPreviewExtender.isExtensionAvailable(cameraSelector)}
+                HDR: ${hdrPreviewExtender.isExtensionAvailable(cameraSelector)}
+                Beauty: ${beautyPreviewExtender.isExtensionAvailable(cameraSelector)}
+                """
         )
     }
 }
