@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -63,7 +64,8 @@ fun MyScreenContent(names: List<String> = listOf("Android", "there")) {
 fun Greeting(name: String) {
     Text(
         text = "Hello $name!",
-        modifier = Modifier.padding(24.dp)
+        modifier = Modifier.padding(24.dp),
+        style = MaterialTheme.typography.h1
     )
 }
 
