@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -66,7 +67,12 @@ fun BodyContent(modifier: Modifier = Modifier) {
 //        Text("vertically.")
 //        Text("We've done it by hand!")
 //    }
-    ScrollableRow(modifier = modifier) {
+    ScrollableRow(
+        modifier = modifier
+            .background(color = Color.LightGray, shape = RectangleShape)
+            .padding(16.dp)
+            .size(200.dp)
+    ) {
         StaggeredGrid {
             for (topic in topics) {
                 Chip(modifier = Modifier.padding(8.dp), text = topic)
