@@ -16,14 +16,13 @@
 
 package com.codelabs.state.todo
 
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.contentColor
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.RowScope.gravity
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -166,7 +165,14 @@ fun TodoItemEntryInput(onItemComplete: (TodoItem) -> Unit) {
         onIconChange = setIcon,
         submit = submit,
         iconVisible = iconVisible
-    )
+    ) {
+        TodoEditButton(
+            onClick = submit,
+            text = "Add",
+            modifier = Modifier.gravity(Alignment.CenterVertically),
+            enabled = text.isNotBlank()
+        )
+    }
 }
 
 @Composable
@@ -176,7 +182,8 @@ fun TodoItemInput(
     icon: TodoIcon,
     onIconChange: (TodoIcon) -> Unit,
     submit: () -> Unit,
-    iconVisible: Boolean
+    iconVisible: Boolean,
+    buttonSlot: @Composable() () -> Unit
 ) {
     Column {
         Row(
@@ -192,12 +199,11 @@ fun TodoItemInput(
                     .padding(end = 8.dp),
                 onImeAction = submit
             )
-            TodoEditButton(
-                onClick = submit,
-                text = "Add",
-                modifier = Modifier.gravity(Alignment.CenterVertically),
-                enabled = text.isNotBlank()
-            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+            Box(Modifier.gravity(Alignment.CenterVertically)) {
+                buttonSlot()
+            }
         }
         if (iconVisible) {
             AnimatedIconRow(icon, onIconChange, Modifier.padding(top = 8.dp))
@@ -223,5 +229,24 @@ fun TodoItemInlineEditor(
     icon = item.icon,
     onIconChange = { onEditItemChange(item.copy(icon = it)) },
     submit = onEditDone,
-    iconVisible = true
+    iconVisible = true,
+    buttonSlot = {
+        Row {
+            val shrinkButtons = Modifier.widthIn(20.dp)
+            TextButton(onClick = onEditDone, modifier = shrinkButtons) {
+                Text(
+                    text = "\uD83D\uDCBE", // floppy disk
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.width(30.dp)
+                )
+            }
+            TextButton(onClick = onRemoveItem, modifier = shrinkButtons) {
+                Text(
+                    text = "❌",
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.width(30.dp)
+                )
+            }
+        }
+    }
 )
