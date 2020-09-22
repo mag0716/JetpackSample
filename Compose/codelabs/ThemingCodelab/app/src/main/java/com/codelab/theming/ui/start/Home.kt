@@ -24,7 +24,6 @@ import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -69,7 +68,7 @@ private fun AppBar() {
         title = {
             Text(text = stringResource(R.string.app_title))
         },
-        backgroundColor = MaterialTheme.colors.primary
+        backgroundColor = MaterialTheme.colors.primarySurface
     )
 }
 
@@ -78,13 +77,18 @@ fun Header(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Text(
-        text = text,
+    Surface(
+        color = MaterialTheme.colors.onSurface.copy(alpha = 0.1f),
+        contentColor = MaterialTheme.colors.primary,
         modifier = modifier
-            .fillMaxWidth()
-            .background(Color.LightGray)
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    )
+    ) {
+        Text(
+            text = text,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+    }
 }
 
 @Composable
@@ -108,14 +112,16 @@ fun FeaturedPost(
             Spacer(Modifier.preferredHeight(16.dp))
 
             val padding = Modifier.padding(horizontal = 16.dp)
-            Text(
-                text = post.title,
-                modifier = padding
-            )
-            Text(
-                text = post.metadata.author.name,
-                modifier = padding
-            )
+            ProvideEmphasis(emphasis = EmphasisAmbient.current.high) {
+                Text(
+                    text = post.title,
+                    modifier = padding
+                )
+                Text(
+                    text = post.metadata.author.name,
+                    modifier = padding
+                )
+            }
             PostMetadata(post, padding)
             Spacer(Modifier.preferredHeight(16.dp))
         }
