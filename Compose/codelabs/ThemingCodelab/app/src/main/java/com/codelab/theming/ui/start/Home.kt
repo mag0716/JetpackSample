@@ -24,6 +24,7 @@ import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -172,6 +173,7 @@ fun PostItem(
         icon = {
             Image(
                 asset = imageResource(post.imageThumbId),
+                modifier = Modifier.clip(shape = MaterialTheme.shapes.small)
             )
         },
         text = {
