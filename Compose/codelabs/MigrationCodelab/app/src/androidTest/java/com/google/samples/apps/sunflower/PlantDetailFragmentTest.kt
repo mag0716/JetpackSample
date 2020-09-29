@@ -23,17 +23,15 @@ import androidx.activity.ComponentActivity
 import androidx.navigation.Navigation.findNavController
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasType
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.ui.test.assertIsDisplayed
+import androidx.ui.test.createAndroidComposeRule
+import androidx.ui.test.onNodeWithText
 import com.google.samples.apps.sunflower.utilities.chooser
 import com.google.samples.apps.sunflower.utilities.testPlant
 import org.hamcrest.CoreMatchers.allOf
@@ -47,14 +45,14 @@ class PlantDetailFragmentTest {
 
     @Rule
     @JvmField
-    val activityTestRule = ActivityScenarioRule(GardenActivity::class.java)
+    val composeTestRule = createAndroidComposeRule<GardenActivity>()
 
     // Note that keeping these references is only safe if the activity is not recreated.
     private lateinit var activity: ComponentActivity
 
     @Before
     fun jumpToPlantDetailFragment() {
-        activityTestRule.scenario.onActivity { gardenActivity ->
+        composeTestRule.activityRule.scenario.onActivity { gardenActivity ->
             activity = gardenActivity
 
             val bundle = Bundle().apply { putString("plantId", "malus-pumila") }
@@ -64,8 +62,7 @@ class PlantDetailFragmentTest {
 
     @Test
     fun testPlantName() {
-        onView(ViewMatchers.withText("Apple"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        composeTestRule.onNodeWithText("Apple").assertIsDisplayed()
     }
 
     @Test
@@ -75,19 +72,19 @@ class PlantDetailFragmentTest {
         Intents.init()
         onView(withId(R.id.action_share)).perform(click())
         intended(
-            chooser(
-                allOf(
-                    hasAction(Intent.ACTION_SEND),
-                    hasType("text/plain"),
-                    hasExtra(Intent.EXTRA_TEXT, shareText)
+                chooser(
+                        allOf(
+                                hasAction(Intent.ACTION_SEND),
+                                hasType("text/plain"),
+                                hasExtra(Intent.EXTRA_TEXT, shareText)
+                        )
                 )
-            )
         )
         Intents.release()
 
         // dismiss the Share Dialog
         InstrumentationRegistry.getInstrumentation()
-            .uiAutomation
-            .performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
+                .uiAutomation
+                .performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
     }
 }
