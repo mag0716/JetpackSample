@@ -103,12 +103,16 @@ class MainActivity : AppCompatActivity() {
                     object : ImageCapture.OnImageSavedCallback {
                         override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                             val msg = "Photo capture succeeded: ${outputFile.absolutePath}"
-                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                            runOnUiThread {
+                                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                            }
                         }
 
                         override fun onError(exception: ImageCaptureException) {
                             val msg = "Photo capture failed : $exception"
-                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                            runOnUiThread {
+                                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     })
             }
