@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
             parent.removeView(viewFinder)
             parent.addView(viewFinder, 0)
 
-            viewFinder.surfaceTexture = it.surfaceTexture
+            viewFinder.setSurfaceTexture(it.surfaceTexture)
             updateTransform()
         }
 
