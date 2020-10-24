@@ -101,9 +101,10 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "output directory : ${outputDirectory.path}")
             val outputFile =
                 File("${outputDirectory.path}/output_${System.currentTimeMillis()}.png")
+            val outputFileOptions = ImageCapture.OutputFileOptions.Builder(outputFile).build()
             captureButton.setOnClickListener {
                 cameraView.takePicture(
-                    outputFile,
+                    outputFileOptions,
                     executor,
                     object : ImageCapture.OnImageSavedCallback {
                         override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {

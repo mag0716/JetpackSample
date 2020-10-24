@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         }
         val preview = previewBuilder.build()
         preview.setSurfaceProvider(
-            previewView.createSurfaceProvider(camera?.cameraInfo)
+            previewView.createSurfaceProvider()
         )
 
         // setup imagecapture
