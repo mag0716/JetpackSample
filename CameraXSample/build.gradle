@@ -2,9 +2,9 @@
 
 buildscript {
     ext.kotlin_version = '1.4.10'
-    ext.camerax_version = "1.0.0-beta07"
-    ext.camerax_extensions_version = "1.0.0-alpha14"
-    ext.camerax_view_version = "1.0.0-alpha14"
+    ext.camerax_version = "1.0.0-beta08"
+    ext.camerax_extensions_version = "1.0.0-alpha15"
+    ext.camerax_view_version = "1.0.0-alpha15"
     repositories {
         google()
         jcenter()
