@@ -1,11 +1,13 @@
 package com.github.mag0716.camerax.view
 
 import android.Manifest
+import android.Manifest.permission
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         changeLensFacingButton = findViewById(R.id.change_lens_facing)
         captureButton = findViewById(R.id.capture_button)
 
+        @SuppressWarnings("MissingPermission") // allPermissionsGrantedでチェックしているのでwarningを抑制。FIXME:もっとスマートな実装を検討
         if (allPermissionsGranted()) {
             initCamera()
         } else {
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            @SuppressWarnings("MissingPermission") // allPermissionsGrantedでチェックしているのでwarningを抑制。FIXME:もっとスマートな実装を検討
             if (allPermissionsGranted()) {
                 initCamera()
             } else {
@@ -85,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    @RequiresPermission(permission.CAMERA)
     private fun initCamera() {
         cameraView.bindToLifecycle(this)
         updateChangeLensFacingButtonText()
@@ -96,19 +101,24 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "output directory : ${outputDirectory.path}")
             val outputFile =
                 File("${outputDirectory.path}/output_${System.currentTimeMillis()}.png")
+            val outputFileOptions = ImageCapture.OutputFileOptions.Builder(outputFile).build()
             captureButton.setOnClickListener {
                 cameraView.takePicture(
-                    outputFile,
+                    outputFileOptions,
                     executor,
                     object : ImageCapture.OnImageSavedCallback {
                         override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                             val msg = "Photo capture succeeded: ${outputFile.absolutePath}"
-                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                            runOnUiThread {
+                                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                            }
                         }
 
                         override fun onError(exception: ImageCaptureException) {
                             val msg = "Photo capture failed : $exception"
-                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                            runOnUiThread {
+                                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     })
             }

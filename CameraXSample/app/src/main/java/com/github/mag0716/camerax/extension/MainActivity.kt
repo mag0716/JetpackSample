@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         previewView = findViewById(R.id.previewView)
-        previewView.preferredImplementationMode = PreviewView.ImplementationMode.TEXTURE_VIEW
+        previewView.implementationMode = PreviewView.ImplementationMode.PERFORMANCE
         captureButton = findViewById(R.id.capture_button)
 
         if (allPermissionsGranted()) {
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         }
         val preview = previewBuilder.build()
         preview.setSurfaceProvider(
-            previewView.createSurfaceProvider(camera?.cameraInfo)
+            previewView.surfaceProvider
         )
 
         // setup imagecapture
