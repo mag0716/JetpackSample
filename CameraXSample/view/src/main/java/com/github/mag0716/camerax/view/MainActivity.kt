@@ -96,13 +96,13 @@ class MainActivity : AppCompatActivity() {
         changeLensFacingButton.setOnClickListener {
             changeLensFacing()
         }
-        val outputDirectory = filesDir
-        if (outputDirectory != null && outputDirectory.exists()) {
-            Log.d(TAG, "output directory : ${outputDirectory.path}")
-            val outputFile =
-                File("${outputDirectory.path}/output_${System.currentTimeMillis()}.png")
-            val outputFileOptions = ImageCapture.OutputFileOptions.Builder(outputFile).build()
-            captureButton.setOnClickListener {
+        captureButton.setOnClickListener {
+            val outputDirectory = filesDir
+            if (outputDirectory != null && outputDirectory.exists()) {
+                Log.d(TAG, "output directory : ${outputDirectory.path}")
+                val outputFile =
+                    File("${outputDirectory.path}/output_${System.currentTimeMillis()}.png")
+                val outputFileOptions = ImageCapture.OutputFileOptions.Builder(outputFile).build()
                 cameraView.takePicture(
                     outputFileOptions,
                     executor,
