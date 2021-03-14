@@ -4,14 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.github.mag0716.composesamples.ui.theme.ComposeSamplesTheme
+import com.github.mag0716.composesamples.ui.theme.Typography
 
 // TODO: 実サンプルへの修正
 enum class Sample {
@@ -51,7 +55,9 @@ fun SampleList(samples: List<Sample>) {
 @Composable
 fun SampleItem(sample: Sample) {
     Text(
-        text = sample.name
+        text = sample.name,
+        style = Typography.h4,
+        modifier = Modifier.padding(16.dp)
     )
 }
 
