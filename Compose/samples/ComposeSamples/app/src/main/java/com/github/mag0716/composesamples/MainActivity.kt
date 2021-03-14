@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -67,7 +69,12 @@ fun SampleItem(sample: Sample) {
     Text(
         text = sample.name,
         style = Typography.h4,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                // TODO: 画面遷移処理
+            }
+            .padding(16.dp)
     )
 }
 
