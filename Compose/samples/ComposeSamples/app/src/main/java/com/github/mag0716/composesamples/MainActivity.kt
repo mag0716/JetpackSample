@@ -7,13 +7,9 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.mag0716.composesamples.ui.theme.ComposeSamplesTheme
@@ -38,8 +34,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeSamplesTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text(getString(R.string.app_name)) }
+                        )
+                    }
+                ) {
                     SampleList(
                         Sample.values().toList()
                     )
