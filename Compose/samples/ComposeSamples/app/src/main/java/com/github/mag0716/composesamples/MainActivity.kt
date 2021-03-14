@@ -3,8 +3,10 @@ package com.github.mag0716.composesamples
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -23,7 +25,12 @@ enum class Sample {
     SAMPLE2,
     SAMPLE3,
     SAMPLE4,
-    SAMPLE5
+    SAMPLE5,
+    SAMPLE6,
+    SAMPLE7,
+    SAMPLE8,
+    SAMPLE9,
+    SAMPLE10,
 }
 
 class MainActivity : ComponentActivity() {
@@ -44,7 +51,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun SampleList(samples: List<Sample>) {
-    Column {
+    Column(
+        modifier = Modifier.verticalScroll(ScrollState(0))
+    ) {
         samples.forEach { sample ->
             SampleItem(sample)
             Divider()
