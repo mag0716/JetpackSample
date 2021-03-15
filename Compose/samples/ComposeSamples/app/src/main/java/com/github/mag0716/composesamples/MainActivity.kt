@@ -14,6 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.github.mag0716.composesamples.ui.theme.ComposeSamplesTheme
 import com.github.mag0716.composesamples.ui.theme.Typography
 
@@ -43,9 +46,14 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) {
-                    SampleList(
-                        Sample.values().toList()
-                    )
+                    val navController = rememberNavController()
+                    NavHost(navController, startDestination = "sampleList") {
+                        composable("sampleList") {
+                            SampleList(
+                                Sample.values().toList()
+                            )
+                        }
+                    }
                 }
             }
         }
