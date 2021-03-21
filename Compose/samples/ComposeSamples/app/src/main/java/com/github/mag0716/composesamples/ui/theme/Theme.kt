@@ -84,6 +84,7 @@ fun AndroidDevChallenge3Theme(
     MaterialTheme(
         colors = colors,
         typography = AndroidDevChallenge3Typography,
+        shapes = AndroidDevChallenge3Shapes,
         content = content
     )
 }
