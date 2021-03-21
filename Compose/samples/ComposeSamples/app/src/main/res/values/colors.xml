@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Android Dev Challenge 3 -->
+    <color name="pink_100">#FFFFF1F1</color>
+    <color name="pink_900">#FF3F2C2C</color>
+    <color name="white_850">#D8FFFFFF</color>
+    <color name="gray">#FF232323</color>
+    <color name="green_900">#FF2D3B2D</color>
+    <color name="green_300">#FFB8C9B8</color>
+    <color name="white_150">#26FFFFFF</color>
 </resources>
