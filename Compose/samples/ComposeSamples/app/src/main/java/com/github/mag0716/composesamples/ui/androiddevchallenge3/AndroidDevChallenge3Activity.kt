@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
 import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 
 class AndroidDevChallenge3Activity : ComponentActivity() {
@@ -15,7 +19,20 @@ class AndroidDevChallenge3Activity : ComponentActivity() {
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         setContent {
             AndroidDevChallenge3Theme {
-                WelcomeScreen()
+                val navController = rememberNavController()
+                NavHost(navController, startDestination = "welcome") {
+                    composable("welcome") {
+                        WelcomeScreen(
+                            createAccount = {},
+                            logIn = {
+                                navController.navigate("logIn")
+                            }
+                        )
+                    }
+                    composable("logIn") {
+                        LogInScreen()
+                    }
+                }
             }
         }
     }

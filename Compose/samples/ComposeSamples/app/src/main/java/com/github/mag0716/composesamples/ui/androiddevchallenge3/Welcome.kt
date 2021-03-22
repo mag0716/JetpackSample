@@ -14,9 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.mag0716.composesamples.R
 
-@Preview
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    createAccount: () -> Unit,
+    logIn: () -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.primary
@@ -53,7 +55,7 @@ fun WelcomeScreen() {
                 )
             )
             Button(
-                onClick = {},
+                onClick = createAccount,
                 colors = buttonColors(
                     backgroundColor = MaterialTheme.colors.secondary,
                     contentColor = MaterialTheme.colors.onSecondary
@@ -73,7 +75,7 @@ fun WelcomeScreen() {
             }
             Spacer(modifier = Modifier.height(8.dp))
             TextButton(
-                onClick = {},
+                onClick = logIn,
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colors.secondary
                 ),
@@ -89,4 +91,14 @@ fun WelcomeScreen() {
             }
         }
     }
+}
+
+
+@Preview
+@Composable
+fun WelcomeScreenPreview() {
+    WelcomeScreen(
+        createAccount = {},
+        logIn = {}
+    )
 }
