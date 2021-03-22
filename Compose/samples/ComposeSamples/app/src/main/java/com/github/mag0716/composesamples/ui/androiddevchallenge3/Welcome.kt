@@ -64,7 +64,7 @@ fun WelcomeScreen() {
                     .fillMaxWidth()
                     .padding(
                         horizontal = 16.dp
-                    ),
+                    )
             ) {
                 Text(
                     text = "Create Account",
@@ -76,7 +76,14 @@ fun WelcomeScreen() {
                 onClick = {},
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colors.secondary
-                )
+                ),
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier
+                    .height(48.dp)
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 16.dp
+                    )
             ) {
                 Text("Log in")
             }
