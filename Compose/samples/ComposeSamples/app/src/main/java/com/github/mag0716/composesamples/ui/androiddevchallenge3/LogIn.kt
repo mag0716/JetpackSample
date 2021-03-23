@@ -16,7 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LogInScreen() {
+fun LogInScreen(
+    login: () -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -87,7 +89,7 @@ fun LogInScreen() {
         )
         MediumShapeContainedButtonWithSecondaryColor(
             text = "Log in",
-            onClick = { },
+            onClick = login,
             modifier = Modifier
                 .height(48.dp)
                 .fillMaxWidth()
@@ -98,5 +100,6 @@ fun LogInScreen() {
 @Preview
 @Composable
 fun LogInScreenPreview() {
-    LogInScreen()
+    LogInScreen {
+    }
 }
