@@ -85,23 +85,13 @@ fun LogInScreen() {
                 bottom = 16.dp
             )
         )
-        // TODO: WelcomeScreenと同じ設定のボタンを使っているので共通化する
-        Button(
+        MediumShapeContainedButtonWithSecondaryColor(
+            text = "Log in",
             onClick = { },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = MaterialTheme.colors.secondary,
-                contentColor = MaterialTheme.colors.onSecondary
-            ),
-            shape = MaterialTheme.shapes.medium,
             modifier = Modifier
                 .height(48.dp)
                 .fillMaxWidth()
-        ) {
-            Text(
-                text = "Log in",
-                style = MaterialTheme.typography.button,
-            )
-        }
+        )
     }
 }
 

@@ -54,41 +54,27 @@ fun WelcomeScreen(
                     bottom = 40.dp
                 )
             )
-            Button(
+            MediumShapeContainedButtonWithSecondaryColor(
+                text = "Create Account",
                 onClick = createAccount,
-                colors = buttonColors(
-                    backgroundColor = MaterialTheme.colors.secondary,
-                    contentColor = MaterialTheme.colors.onSecondary
-                ),
-                shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .height(48.dp)
                     .fillMaxWidth()
                     .padding(
                         horizontal = 16.dp
                     )
-            ) {
-                Text(
-                    text = "Create Account",
-                    style = MaterialTheme.typography.button,
-                )
-            }
+            )
             Spacer(modifier = Modifier.height(8.dp))
-            TextButton(
+            MediumShapeTextButtonWithSecondaryColor(
+                text = "Log in",
                 onClick = logIn,
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = MaterialTheme.colors.secondary
-                ),
-                shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .height(48.dp)
                     .fillMaxWidth()
                     .padding(
                         horizontal = 16.dp
                     )
-            ) {
-                Text("Log in")
-            }
+            )
         }
     }
 }
