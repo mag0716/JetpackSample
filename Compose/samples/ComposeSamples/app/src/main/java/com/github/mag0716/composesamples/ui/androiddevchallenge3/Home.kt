@@ -1,17 +1,15 @@
 package com.github.mag0716.composesamples.ui.androiddevchallenge3
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -154,6 +152,33 @@ fun HomeScreen() {
                 for (theme in Theme.values()) {
                     ThemeCard(theme = theme)
                 }
+            }
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(
+                    "Design your home garden",
+                    style = MaterialTheme.typography.h1,
+                    color = MaterialTheme.colors.onSurface,
+                    modifier = Modifier
+                        .weight(1f)
+                        .paddingFromBaseline(
+                            top = 40.dp,
+                            bottom = 16.dp
+                        )
+                )
+                // FIXME: アイコンのレイアウト位置は指示通りになってる？
+                Image(
+                    imageVector = Icons.Default.FilterList,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .size(24.dp)
+                        .clickable { }
+                )
             }
         }
     }
