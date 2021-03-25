@@ -118,11 +118,12 @@ fun HomeScreen() {
         }
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .padding(
-                    top = 40.dp
+                    top = 40.dp,
+                    // BottomNavigation分の高さをセットしておく必要がある
+                    bottom = 56.dp
                 )
         ) {
             OutlinedTextField(
@@ -202,6 +203,7 @@ fun HomeScreen() {
                         horizontal = 16.dp
                     )
                 )
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
