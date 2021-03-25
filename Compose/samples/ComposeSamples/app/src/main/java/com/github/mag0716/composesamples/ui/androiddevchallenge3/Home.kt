@@ -9,11 +9,12 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.github.mag0716.composesamples.R
 
 enum class Theme(
@@ -25,6 +26,19 @@ enum class Theme(
     JungleVibes("Jungle vibes", R.drawable.jungle_vibes),
     EasyCare("Easy care", R.drawable.easy_care),
     Statements("Statements", R.drawable.statements)
+}
+
+enum class Garden(
+    val title: String,
+    val description: String,
+    @DrawableRes val resourceId: Int
+) {
+    Monstera("Monstera", "This is a description", R.drawable.monstera),
+    Aglaonema("Aglaonema", "This is a description", R.drawable.aglaonema),
+    PeachLily("Peace lily", "This is a description", R.drawable.peach_lily),
+    FiddleLeafTree("Fiddle leaf tree", "This is a description", R.drawable.fiddle_leaf_tree),
+    SnakePlant("Snake plant", "This is a description", R.drawable.snake_plant),
+    Pothos("Pothos", "This is a description", R.drawable.pothos)
 }
 
 @Composable
@@ -180,6 +194,15 @@ fun HomeScreen() {
                         .clickable { }
                 )
             }
+            for ((index, garden) in Garden.values().withIndex()) {
+                GardenCell(
+                    garden = garden,
+                    isSelected = index == 0,
+                    modifier = Modifier.padding(
+                        horizontal = 16.dp
+                    )
+                )
+            }
         }
     }
 }
@@ -220,6 +243,76 @@ fun ThemeCard(theme: Theme) {
     }
 }
 
+@Composable
+fun GardenCell(
+    garden: Garden,
+    isSelected: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .height(64.dp)
+    ) {
+        Image(
+            painter = painterResource(id = garden.resourceId),
+            contentDescription = garden.title,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f)
+        )
+        ConstraintLayout(
+            modifier = Modifier
+        ) {
+            val (titleText, descriptionText, checkBox, divider) = createRefs()
+            Text(
+                garden.title,
+                style = MaterialTheme.typography.h1,
+                color = MaterialTheme.colors.onSurface,
+                modifier = Modifier
+                    .constrainAs(titleText) {
+                        width = Dimension.fillToConstraints
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start, margin = 16.dp)
+                        end.linkTo(checkBox.start)
+                    }
+                    .paddingFromBaseline(top = 24.dp)
+            )
+            Text(
+                garden.description,
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.onSurface,
+                modifier = Modifier
+                    .constrainAs(descriptionText) {
+                        width = Dimension.fillToConstraints
+                        top.linkTo(titleText.bottom)
+                        start.linkTo(titleText.start)
+                        end.linkTo(checkBox.start)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .paddingFromBaseline(bottom = 24.dp)
+            )
+            Checkbox(
+                checked = isSelected,
+                onCheckedChange = {},
+                modifier = Modifier.constrainAs(checkBox) {
+                    start.linkTo(descriptionText.end)
+                    end.linkTo(parent.end)
+                    // FIXME: descriptionTextのbaselineとbottomを揃えたかったが型が異なるのでできなかったので、仕方なくmarginを指定
+                    bottom.linkTo(parent.bottom, margin = 24.dp)
+                }
+            )
+            Divider(
+                modifier = Modifier.constrainAs(divider) {
+                    start.linkTo(parent.start, margin = 8.dp)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                }
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 fun HomeScreenPreview() {
@@ -230,4 +323,10 @@ fun HomeScreenPreview() {
 @Composable
 fun ThemeCardPreview() {
     ThemeCard(Theme.DesertChick)
+}
+
+@Preview
+@Composable
+fun GardenCellPreview() {
+    GardenCell(Garden.Monstera, true)
 }
