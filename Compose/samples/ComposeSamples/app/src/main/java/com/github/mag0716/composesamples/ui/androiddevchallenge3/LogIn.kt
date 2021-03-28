@@ -30,6 +30,7 @@ fun LogInScreen(
         Text(
             text = "Log in with email",
             style = MaterialTheme.typography.h1,
+            color = MaterialTheme.colors.onBackground,
             modifier = Modifier
                 .paddingFromBaseline(
                     top = 184.dp,
@@ -81,6 +82,7 @@ fun LogInScreen(
                 append(".")
             },
             style = MaterialTheme.typography.body2,
+            color = MaterialTheme.colors.onBackground,
             textAlign = TextAlign.Center,
             modifier = Modifier.paddingFromBaseline(
                 top = 24.dp,
