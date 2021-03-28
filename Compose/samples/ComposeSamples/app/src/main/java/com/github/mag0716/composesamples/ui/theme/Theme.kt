@@ -51,7 +51,7 @@ fun ComposeSamplesTheme(
 @Composable
 fun AndroidDevChallenge3Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
         darkColors(
