@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.github.mag0716.composesamples.R
+import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 
 enum class Theme(
     val title: String,
@@ -323,17 +324,23 @@ fun GardenCell(
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    AndroidDevChallenge3Theme {
+        HomeScreen()
+    }
 }
 
 @Preview
 @Composable
 fun ThemeCardPreview() {
-    ThemeCard(Theme.DesertChick)
+    AndroidDevChallenge3Theme {
+        ThemeCard(Theme.DesertChick)
+    }
 }
 
 @Preview
 @Composable
 fun GardenCellPreview() {
-    GardenCell(Garden.Monstera, true)
+    AndroidDevChallenge3Theme {
+        GardenCell(Garden.Monstera, true)
+    }
 }

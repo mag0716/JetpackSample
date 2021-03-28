@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 
 @Composable
 fun LogInScreen(
@@ -102,6 +103,8 @@ fun LogInScreen(
 @Preview
 @Composable
 fun LogInScreenPreview() {
-    LogInScreen {
+    AndroidDevChallenge3Theme {
+        LogInScreen {
+        }
     }
 }
