@@ -45,7 +45,9 @@ enum class Garden(
 fun HomeScreen() {
     Scaffold(
         bottomBar = {
-            BottomNavigation {
+            BottomNavigation(
+                backgroundColor = MaterialTheme.colors.primary
+            ) {
                 BottomNavigationItem(
                     icon = {
                         Icon(
