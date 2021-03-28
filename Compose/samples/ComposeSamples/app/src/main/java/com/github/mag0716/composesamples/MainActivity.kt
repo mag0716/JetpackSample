@@ -1,5 +1,6 @@
 package com.github.mag0716.composesamples
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +13,7 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.github.mag0716.composesamples.ui.Dummy
 import com.github.mag0716.composesamples.ui.SampleList
+import com.github.mag0716.composesamples.ui.androiddevchallenge3.AndroidDevChallenge3Activity
 import com.github.mag0716.composesamples.ui.theme.ComposeSamplesTheme
 
 class MainActivity : ComponentActivity() {
@@ -32,8 +34,17 @@ class MainActivity : ComponentActivity() {
                         composable("sampleList") {
                             SampleList(
                                 Sample.values().toList()
-                            ) {
-                                navController.navigate("dummy") {
+                            ) { sample ->
+                                if (sample == Sample.AndroidDevChallenge3) {
+                                    startActivity(
+                                        Intent(
+                                            this@MainActivity,
+                                            AndroidDevChallenge3Activity::class.java
+                                        )
+                                    )
+                                } else {
+                                    navController.navigate("dummy") {
+                                    }
                                 }
                             }
                         }

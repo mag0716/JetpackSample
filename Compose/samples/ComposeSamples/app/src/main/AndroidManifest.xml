@@ -16,10 +16,14 @@
             android:theme="@style/Theme.ComposeSamples.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.androiddevchallenge3.AndroidDevChallenge3Activity"
+            android:exported="false"
+            android:theme="@style/Theme.AndroidDevChallenge3.NoActionBar" />
     </application>
 
 </manifest>
