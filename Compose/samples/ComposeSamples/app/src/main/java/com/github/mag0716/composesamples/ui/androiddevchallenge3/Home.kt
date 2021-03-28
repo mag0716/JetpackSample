@@ -297,6 +297,9 @@ fun GardenCell(
             Checkbox(
                 checked = isSelected,
                 onCheckedChange = {},
+                colors = CheckboxDefaults.colors(
+                    checkmarkColor = MaterialTheme.colors.onSecondary
+                ),
                 modifier = Modifier.constrainAs(checkBox) {
                     start.linkTo(descriptionText.end)
                     end.linkTo(parent.end)
