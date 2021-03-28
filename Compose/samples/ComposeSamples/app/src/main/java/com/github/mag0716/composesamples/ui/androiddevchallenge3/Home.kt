@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.github.mag0716.composesamples.R
+import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 
 enum class Theme(
     val title: String,
@@ -43,170 +45,93 @@ enum class Garden(
 
 @Composable
 fun HomeScreen() {
-    Scaffold(
-        bottomBar = {
-            BottomNavigation(
-                backgroundColor = MaterialTheme.colors.primary
-            ) {
-                BottomNavigationItem(
-                    icon = {
-                        Icon(
-                            Icons.Filled.Home,
-                            contentDescription = "Home",
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = {
-                        Text(
-                            "Home",
-                            style = MaterialTheme.typography.caption
-                        )
-                    },
-                    selected = true,
-                    onClick = {}
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(
+                top = 40.dp,
+                // BottomNavigation分の高さをセットしておく必要がある
+                bottom = 56.dp
+            )
+    ) {
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = {
+                Text(
+                    "Search",
+                    style = MaterialTheme.typography.body1
                 )
-                BottomNavigationItem(
-                    icon = {
-                        Icon(
-                            Icons.Filled.FavoriteBorder,
-                            contentDescription = "Favorites",
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = {
-                        Text(
-                            "Favorites",
-                            style = MaterialTheme.typography.caption
-                        )
-                    },
-                    selected = false,
-                    onClick = {}
+            },
+            leadingIcon = {
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
                 )
-                BottomNavigationItem(
-                    icon = {
-                        Icon(
-                            Icons.Filled.AccountCircle,
-                            contentDescription = "Account",
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = {
-                        Text(
-                            "Account",
-                            style = MaterialTheme.typography.caption
-                        )
-                    },
-                    selected = false,
-                    onClick = {}
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        )
+        Text(
+            "Browse themes",
+            style = MaterialTheme.typography.h1,
+            color = MaterialTheme.colors.onSurface,
+            modifier = Modifier
+                .fillMaxWidth()
+                .paddingFromBaseline(
+                    top = 32.dp,
+                    bottom = 16.dp
                 )
-                BottomNavigationItem(
-                    icon = {
-                        Icon(
-                            Icons.Filled.ShoppingCart,
-                            contentDescription = "Cart",
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = {
-                        Text(
-                            "Cart",
-                            style = MaterialTheme.typography.caption
-                        )
-                    },
-                    selected = false,
-                    onClick = {}
-                )
+                .padding(horizontal = 16.dp)
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
+        ) {
+            for (theme in Theme.values()) {
+                ThemeCard(theme = theme)
             }
         }
-    ) {
-        Column(
+        Row(
+            verticalAlignment = Alignment.Bottom,
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    top = 40.dp,
-                    // BottomNavigation分の高さをセットしておく必要がある
-                    bottom = 56.dp
-                )
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
         ) {
-            OutlinedTextField(
-                value = "",
-                onValueChange = {},
-                label = {
-                    Text(
-                        "Search",
-                        style = MaterialTheme.typography.body1
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Search,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-            )
             Text(
-                "Browse themes",
+                "Design your home garden",
                 style = MaterialTheme.typography.h1,
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .weight(1f)
                     .paddingFromBaseline(
-                        top = 32.dp,
+                        top = 40.dp,
                         bottom = 16.dp
                     )
-                    .padding(horizontal = 16.dp)
             )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            // FIXME: アイコンのレイアウト位置は指示通りになってる？
+            Image(
+                imageVector = Icons.Default.FilterList,
+                contentDescription = null,
                 modifier = Modifier
-                    .horizontalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp)
-            ) {
-                for (theme in Theme.values()) {
-                    ThemeCard(theme = theme)
-                }
-            }
-            Row(
-                verticalAlignment = Alignment.Bottom,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            ) {
-                Text(
-                    "Design your home garden",
-                    style = MaterialTheme.typography.h1,
-                    color = MaterialTheme.colors.onSurface,
-                    modifier = Modifier
-                        .weight(1f)
-                        .paddingFromBaseline(
-                            top = 40.dp,
-                            bottom = 16.dp
-                        )
+                    .padding(bottom = 8.dp)
+                    .size(24.dp)
+                    .clickable { }
+            )
+        }
+        for ((index, garden) in Garden.values().withIndex()) {
+            GardenCell(
+                garden = garden,
+                isSelected = index == 0,
+                modifier = Modifier.padding(
+                    horizontal = 16.dp
                 )
-                // FIXME: アイコンのレイアウト位置は指示通りになってる？
-                Image(
-                    imageVector = Icons.Default.FilterList,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
-                        .size(24.dp)
-                        .clickable { }
-                )
-            }
-            for ((index, garden) in Garden.values().withIndex()) {
-                GardenCell(
-                    garden = garden,
-                    isSelected = index == 0,
-                    modifier = Modifier.padding(
-                        horizontal = 16.dp
-                    )
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -264,6 +189,7 @@ fun GardenCell(
             modifier = Modifier
                 .fillMaxHeight()
                 .aspectRatio(1f)
+                .clip(MaterialTheme.shapes.small)
         )
         ConstraintLayout(
             modifier = Modifier
@@ -323,17 +249,23 @@ fun GardenCell(
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    AndroidDevChallenge3Theme {
+        HomeScreen()
+    }
 }
 
 @Preview
 @Composable
 fun ThemeCardPreview() {
-    ThemeCard(Theme.DesertChick)
+    AndroidDevChallenge3Theme {
+        ThemeCard(Theme.DesertChick)
+    }
 }
 
 @Preview
 @Composable
 fun GardenCellPreview() {
-    GardenCell(Garden.Monstera, true)
+    AndroidDevChallenge3Theme {
+        GardenCell(Garden.Monstera, true)
+    }
 }

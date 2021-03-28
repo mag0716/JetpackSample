@@ -32,12 +32,12 @@ class AndroidDevChallenge3Activity : ComponentActivity() {
                     composable("logIn") {
                         LogInScreen(
                             login = {
-                                navController.navigate("home")
+                                navController.navigate("bottomNavigationScreen")
                             }
                         )
                     }
-                    composable("home") {
-                        HomeScreen()
+                    composable("bottomNavigationScreen") {
+                        BottomNavigationScreen()
                     }
                 }
             }

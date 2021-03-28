@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.mag0716.composesamples.R
+import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 
 @Composable
 fun WelcomeScreen(
@@ -83,8 +84,10 @@ fun WelcomeScreen(
 @Preview
 @Composable
 fun WelcomeScreenPreview() {
-    WelcomeScreen(
-        createAccount = {},
-        logIn = {}
-    )
+    AndroidDevChallenge3Theme {
+        WelcomeScreen(
+            createAccount = {},
+            logIn = {}
+        )
+    }
 }
