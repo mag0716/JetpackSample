@@ -3,6 +3,7 @@ package com.github.mag0716.composesamples
 // TODO: 実サンプルへの修正
 enum class Sample {
     AndroidDevChallenge3,
+    RequiredSize,
     SAMPLE1,
     SAMPLE2,
     SAMPLE3,
