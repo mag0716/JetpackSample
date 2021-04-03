@@ -4,6 +4,7 @@ package com.github.mag0716.composesamples
 enum class Sample {
     AndroidDevChallenge3,
     RequiredSize,
+    BoxWithConstraints,
     SAMPLE1,
     SAMPLE2,
     SAMPLE3,
