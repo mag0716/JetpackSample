@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import com.github.mag0716.composesamples.ui.BoxWithConstraintsScopeScreen
+import com.github.mag0716.composesamples.ui.RequiredSizeScreen
 import com.github.mag0716.composesamples.ui.Dummy
 import com.github.mag0716.composesamples.ui.SampleList
 import com.github.mag0716.composesamples.ui.androiddevchallenge3.AndroidDevChallenge3Activity
@@ -42,11 +44,20 @@ class MainActivity : ComponentActivity() {
                                             AndroidDevChallenge3Activity::class.java
                                         )
                                     )
+                                } else if (sample == Sample.RequiredSize) {
+                                    navController.navigate("requiredSize")
+                                } else if (sample == Sample.BoxWithConstraints) {
+                                    navController.navigate("boxWithConstraints")
                                 } else {
-                                    navController.navigate("dummy") {
-                                    }
+                                    navController.navigate("dummy")
                                 }
                             }
+                        }
+                        composable("requiredSize") {
+                            RequiredSizeScreen()
+                        }
+                        composable("boxWithConstraints") {
+                            BoxWithConstraintsScopeScreen()
                         }
                         composable("dummy") {
                             Dummy()

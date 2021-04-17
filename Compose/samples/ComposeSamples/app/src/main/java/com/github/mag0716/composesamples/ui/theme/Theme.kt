@@ -41,7 +41,7 @@ fun ComposeSamplesTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = ComposableSampleTypography,
         shapes = Shapes,
         content = content
     )

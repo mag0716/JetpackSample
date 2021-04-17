@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.sp
 import com.github.mag0716.composesamples.R
 
 // Set of Material typography styles to start with
-val Typography = Typography(
+val ComposableSampleTypography = Typography(
     body1 = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
