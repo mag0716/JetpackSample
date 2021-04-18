@@ -44,7 +44,7 @@ fun UseMutableStateScreen() {
 // https://developer.android.com/jetpack/compose/state#use-rememeber-to-create-internal-state-in-composable
 @Composable
 fun ExpandingCard(title: String, body: String, initialExpanded: Boolean = false) {
-    var expandedState = remember { mutableStateOf(initialExpanded) }
+    val expandedState = remember { mutableStateOf(initialExpanded) }
     Card {
         Column(
             Modifier
