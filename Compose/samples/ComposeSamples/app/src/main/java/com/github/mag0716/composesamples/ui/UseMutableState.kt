@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
@@ -57,27 +58,29 @@ fun ExpandingCard(title: String, body: String, initialExpanded: Boolean = false)
         ) {
             Text(text = title)
 
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (expanded) {
-                    Text(text = body)
+            if (expanded) {
+                Text(
+                    text = body,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
 
+                IconButton(
+                    onClick = { expanded = false },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Icon(
                         imageVector = Icons.Default.ExpandLess,
-                        contentDescription = null,
-                        modifier = Modifier.clickable {
-                            expanded = false
-                        }
+                        contentDescription = "Expand Less"
                     )
-                } else {
+                }
+            } else {
+                IconButton(
+                    onClick = { expanded = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Icon(
                         imageVector = Icons.Default.ExpandMore,
-                        contentDescription = null,
-                        modifier = Modifier.clickable {
-                            expanded = true
-                        }
+                        contentDescription = "Expand More"
                     )
                 }
             }
