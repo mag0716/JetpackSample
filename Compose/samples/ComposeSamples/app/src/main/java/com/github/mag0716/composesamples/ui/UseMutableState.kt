@@ -9,7 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,8 +43,8 @@ fun UseMutableStateScreen() {
 
 // https://developer.android.com/jetpack/compose/state#use-rememeber-to-create-internal-state-in-composable
 @Composable
-fun ExpandingCard(title: String, body: String) {
-    var expandedState = remember { mutableStateOf(false) }
+fun ExpandingCard(title: String, body: String, initialExpanded: Boolean = false) {
+    var expandedState = remember { mutableStateOf(initialExpanded) }
     Card {
         Column(
             Modifier
@@ -99,6 +98,7 @@ fun ExpandingCardPreview() {
                 body
                 body
                 body
-            """.trimIndent()
+            """.trimIndent(),
+        initialExpanded = true
     )
 }
