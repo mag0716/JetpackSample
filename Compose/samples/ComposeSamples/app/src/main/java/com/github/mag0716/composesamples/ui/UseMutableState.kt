@@ -17,6 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+
 @Composable
 fun UseMutableStateScreen() {
     Box(
@@ -44,7 +47,7 @@ fun UseMutableStateScreen() {
 // https://developer.android.com/jetpack/compose/state#use-rememeber-to-create-internal-state-in-composable
 @Composable
 fun ExpandingCard(title: String, body: String, initialExpanded: Boolean = false) {
-    val expandedState = remember { mutableStateOf(initialExpanded) }
+    var expanded: Boolean by remember { mutableStateOf(initialExpanded) }
     Card {
         Column(
             Modifier
@@ -58,14 +61,14 @@ fun ExpandingCard(title: String, body: String, initialExpanded: Boolean = false)
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (expandedState.value) {
+                if (expanded) {
                     Text(text = body)
 
                     Icon(
                         imageVector = Icons.Default.ExpandLess,
                         contentDescription = null,
                         modifier = Modifier.clickable {
-                            expandedState.value = false
+                            expanded = false
                         }
                     )
                 } else {
@@ -73,7 +76,7 @@ fun ExpandingCard(title: String, body: String, initialExpanded: Boolean = false)
                         imageVector = Icons.Default.ExpandMore,
                         contentDescription = null,
                         modifier = Modifier.clickable {
-                            expandedState.value = true
+                            expanded = true
                         }
                     )
                 }
