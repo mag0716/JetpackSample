@@ -5,6 +5,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -16,8 +18,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+
 @Composable
 fun LogInScreen(
+    login: () -> Unit
+) {
+    var eMailAddress by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    LogInScreen(
+        eMailAddress = eMailAddress,
+        onChangeEMailAddress = { eMailAddress = it },
+        password = password,
+        onChangePassword = { password = it },
+        // TODO:ログイン処理をViewModel側に委譲
+        login = login
+    )
+}
+
+@Composable
+fun LogInScreen(
+    eMailAddress: String,
+    onChangeEMailAddress: (String) -> Unit,
+    password: String,
+    onChangePassword: (String) -> Unit,
     login: () -> Unit
 ) {
     Column(
@@ -39,8 +65,8 @@ fun LogInScreen(
                 )
         )
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = eMailAddress,
+            onValueChange = onChangeEMailAddress,
             label = {
                 Text(
                     "Email address",
@@ -53,8 +79,8 @@ fun LogInScreen(
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = password,
+            onValueChange = onChangePassword,
             label = {
                 Text(
                     "Password (8+ characters)",
