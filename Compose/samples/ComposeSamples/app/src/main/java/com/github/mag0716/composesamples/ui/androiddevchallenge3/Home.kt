@@ -7,6 +7,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +20,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.github.mag0716.composesamples.R
 import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 enum class Theme(
     val title: String,
@@ -45,6 +50,18 @@ enum class Garden(
 
 @Composable
 fun HomeScreen() {
+    var searchText by remember { mutableStateOf("") }
+    HomeScreen(
+        searchText = searchText,
+        onChangeSearchText = { searchText = it }
+    )
+}
+
+@Composable
+fun HomeScreen(
+    searchText: String,
+    onChangeSearchText: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -55,8 +72,8 @@ fun HomeScreen() {
             )
     ) {
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = searchText,
+            onValueChange = onChangeSearchText,
             label = {
                 Text(
                     "Search",
