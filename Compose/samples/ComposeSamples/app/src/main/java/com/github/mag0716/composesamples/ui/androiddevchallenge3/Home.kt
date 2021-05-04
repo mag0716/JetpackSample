@@ -31,12 +31,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     var searchText by remember { mutableStateOf("") }
     val themeList: List<Theme> by viewModel.themeList.observeAsState(emptyList())
-    val gardenList: List<Garden> by viewModel.gardenList.observeAsState(emptyList())
+    val gardenListWithSelectedStatus: List<Pair<Garden, Boolean>> by viewModel.gardenListWithSelectedStatus.observeAsState(
+        emptyList()
+    )
     HomeScreen(
         searchText = searchText,
         onChangeSearchText = { searchText = it },
         themeList = themeList,
-        gardenList = gardenList
+        gardenListWithSelectedStatus = gardenListWithSelectedStatus,
+        onChangeGardenSelected = { garden, _ ->
+            viewModel.addOrRemoveSelectedGarden(garden)
+        }
     )
 }
 
@@ -45,7 +50,8 @@ fun HomeScreen(
     searchText: String,
     onChangeSearchText: (String) -> Unit,
     themeList: List<Theme>,
-    gardenList: List<Garden>
+    gardenListWithSelectedStatus: List<Pair<Garden, Boolean>>,
+    onChangeGardenSelected: (Garden, Boolean) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(start = 16.dp, top = 40.dp, bottom = 56.dp, end = 16.dp)
@@ -121,11 +127,11 @@ fun HomeScreen(
                 )
             }
         }
-        items(gardenList) { garden ->
+        items(gardenListWithSelectedStatus) { gardenWithSelectedStatus ->
             GardenCell(
-                garden = garden,
-                // TODO: 選択状態
-                isSelected = false
+                garden = gardenWithSelectedStatus.first,
+                isSelected = gardenWithSelectedStatus.second,
+                onChangeSelected = onChangeGardenSelected
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -172,6 +178,7 @@ fun ThemeCard(theme: Theme) {
 fun GardenCell(
     garden: Garden,
     isSelected: Boolean,
+    onChangeSelected: (Garden, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -220,7 +227,9 @@ fun GardenCell(
             )
             Checkbox(
                 checked = isSelected,
-                onCheckedChange = {},
+                onCheckedChange = {
+                    onChangeSelected(garden, it)
+                },
                 colors = CheckboxDefaults.colors(
                     checkmarkColor = MaterialTheme.colors.onSecondary
                 ),
@@ -245,12 +254,16 @@ fun GardenCell(
 @Preview
 @Composable
 fun HomeScreenPreview() {
+    val gardenListWithSelectedStatus = Garden.values().toList().mapIndexed { index, garden ->
+        Pair(garden, index % 2 == 0)
+    }
     AndroidDevChallenge3Theme {
         HomeScreen(
             searchText = "",
             onChangeSearchText = {},
             themeList = Theme.values().toList(),
-            gardenList = Garden.values().toList()
+            gardenListWithSelectedStatus = gardenListWithSelectedStatus,
+            onChangeGardenSelected = { _, _ -> }
         )
     }
 }
@@ -267,6 +280,10 @@ fun ThemeCardPreview() {
 @Composable
 fun GardenCellPreview() {
     AndroidDevChallenge3Theme {
-        GardenCell(Garden.Monstera, true)
+        GardenCell(
+            garden = Garden.Monstera,
+            isSelected = true,
+            onChangeSelected = { _, _ -> }
+        )
     }
 }
