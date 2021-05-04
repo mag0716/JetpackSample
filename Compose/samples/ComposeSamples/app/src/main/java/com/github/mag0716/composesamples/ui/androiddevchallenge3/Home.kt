@@ -1,8 +1,10 @@
 package com.github.mag0716.composesamples.ui.androiddevchallenge3
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -18,111 +20,112 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.github.mag0716.composesamples.R
 import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     var searchText by remember { mutableStateOf("") }
+    val themeList: List<Theme> by viewModel.themeList.observeAsState(emptyList())
+    val gardenList: List<Garden> by viewModel.gardenList.observeAsState(emptyList())
     HomeScreen(
         searchText = searchText,
-        onChangeSearchText = { searchText = it }
+        onChangeSearchText = { searchText = it },
+        themeList = themeList,
+        gardenList = gardenList
     )
 }
 
 @Composable
 fun HomeScreen(
     searchText: String,
-    onChangeSearchText: (String) -> Unit
+    onChangeSearchText: (String) -> Unit,
+    themeList: List<Theme>,
+    gardenList: List<Garden>
 ) {
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(
-                top = 40.dp,
-                // BottomNavigation分の高さをセットしておく必要がある
-                bottom = 56.dp
-            )
+    LazyColumn(
+        contentPadding = PaddingValues(start = 16.dp, top = 40.dp, bottom = 56.dp, end = 16.dp)
     ) {
-        OutlinedTextField(
-            value = searchText,
-            onValueChange = onChangeSearchText,
-            label = {
-                Text(
-                    "Search",
-                    style = MaterialTheme.typography.body1
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    Icons.Default.Search,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        )
-        Text(
-            "Browse themes",
-            style = MaterialTheme.typography.h1,
-            color = MaterialTheme.colors.onSurface,
-            modifier = Modifier
-                .fillMaxWidth()
-                .paddingFromBaseline(
-                    top = 32.dp,
-                    bottom = 16.dp
-                )
-                .padding(horizontal = 16.dp)
-        )
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .horizontalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp)
-        ) {
-            for (theme in Theme.values()) {
-                ThemeCard(theme = theme)
-            }
+        item {
+            OutlinedTextField(
+                value = searchText,
+                onValueChange = onChangeSearchText,
+                label = {
+                    Text(
+                        "Search",
+                        style = MaterialTheme.typography.body1
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Search,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
-        Row(
-            verticalAlignment = Alignment.Bottom,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
+        item {
             Text(
-                "Design your home garden",
+                "Browse themes",
                 style = MaterialTheme.typography.h1,
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier
-                    .weight(1f)
+                    .fillMaxWidth()
                     .paddingFromBaseline(
-                        top = 40.dp,
+                        top = 32.dp,
                         bottom = 16.dp
                     )
             )
-            // FIXME: アイコンのレイアウト位置は指示通りになってる？
-            Image(
-                imageVector = Icons.Default.FilterList,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(bottom = 8.dp)
-                    .size(24.dp)
-                    .clickable { }
-            )
         }
-        for ((index, garden) in Garden.values().withIndex()) {
+        item {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(themeList) { theme ->
+                    ThemeCard(theme = theme)
+                }
+            }
+        }
+        item {
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    "Design your home garden",
+                    style = MaterialTheme.typography.h1,
+                    color = MaterialTheme.colors.onSurface,
+                    modifier = Modifier
+                        .weight(1f)
+                        .paddingFromBaseline(
+                            top = 40.dp,
+                            bottom = 16.dp
+                        )
+                )
+                // FIXME: アイコンのレイアウト位置は指示通りになってる？
+                Image(
+                    imageVector = Icons.Default.FilterList,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .size(24.dp)
+                        .clickable { }
+                )
+            }
+        }
+        items(gardenList) { garden ->
             GardenCell(
                 garden = garden,
-                isSelected = index == 0,
-                modifier = Modifier.padding(
-                    horizontal = 16.dp
-                )
+                // TODO: 選択状態
+                isSelected = false
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -243,7 +246,12 @@ fun GardenCell(
 @Composable
 fun HomeScreenPreview() {
     AndroidDevChallenge3Theme {
-        HomeScreen()
+        HomeScreen(
+            searchText = "",
+            onChangeSearchText = {},
+            themeList = Theme.values().toList(),
+            gardenList = Garden.values().toList()
+        )
     }
 }
 
