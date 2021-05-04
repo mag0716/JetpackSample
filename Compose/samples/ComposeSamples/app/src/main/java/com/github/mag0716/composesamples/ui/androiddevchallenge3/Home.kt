@@ -24,30 +24,6 @@ import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 
-enum class Theme(
-    val title: String,
-    @DrawableRes val resourceId: Int
-) {
-    DesertChick("Desert chic", R.drawable.desert_chic),
-    TinyTerrariums("Tiny terrariums", R.drawable.tiny_terrariums),
-    JungleVibes("Jungle vibes", R.drawable.jungle_vibes),
-    EasyCare("Easy care", R.drawable.easy_care),
-    Statements("Statements", R.drawable.statements)
-}
-
-enum class Garden(
-    val title: String,
-    val description: String,
-    @DrawableRes val resourceId: Int
-) {
-    Monstera("Monstera", "This is a description", R.drawable.monstera),
-    Aglaonema("Aglaonema", "This is a description", R.drawable.aglaonema),
-    PeachLily("Peace lily", "This is a description", R.drawable.peach_lily),
-    FiddleLeafTree("Fiddle leaf tree", "This is a description", R.drawable.fiddle_leaf_tree),
-    SnakePlant("Snake plant", "This is a description", R.drawable.snake_plant),
-    Pothos("Pothos", "This is a description", R.drawable.pothos)
-}
-
 @Composable
 fun HomeScreen() {
     var searchText by remember { mutableStateOf("") }
