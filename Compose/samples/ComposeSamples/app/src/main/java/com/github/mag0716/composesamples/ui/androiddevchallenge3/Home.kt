@@ -24,12 +24,13 @@ import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
-    var searchText by remember { mutableStateOf("") }
+    var searchText by rememberSaveable { mutableStateOf("") }
     val themeList: List<Theme> by viewModel.themeList.observeAsState(emptyList())
     val gardenListWithSelectedStatus: List<Pair<Garden, Boolean>> by viewModel.gardenListWithSelectedStatus.observeAsState(
         emptyList()

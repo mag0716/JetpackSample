@@ -19,14 +19,15 @@ import androidx.compose.ui.unit.dp
 import com.github.mag0716.composesamples.ui.theme.AndroidDevChallenge3Theme
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 
 @Composable
 fun LogInScreen(
     login: () -> Unit
 ) {
-    var eMailAddress by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var eMailAddress by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
 
     LogInScreen(
         eMailAddress = eMailAddress,
