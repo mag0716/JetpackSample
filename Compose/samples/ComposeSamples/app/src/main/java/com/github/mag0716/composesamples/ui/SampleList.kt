@@ -44,6 +44,6 @@ fun SampleItem(sample: Sample, navigateToSample: (Sample) -> Unit) {
 @Preview
 @Composable
 fun SampleItemPreview() {
-    SampleItem(Sample.SAMPLE1) {
+    SampleItem(Sample.AndroidDevChallenge3) {
     }
 }

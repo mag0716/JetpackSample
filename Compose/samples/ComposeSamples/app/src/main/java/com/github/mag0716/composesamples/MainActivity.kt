@@ -13,8 +13,8 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.github.mag0716.composesamples.ui.BoxWithConstraintsScopeScreen
 import com.github.mag0716.composesamples.ui.RequiredSizeScreen
-import com.github.mag0716.composesamples.ui.Dummy
 import com.github.mag0716.composesamples.ui.SampleList
+import com.github.mag0716.composesamples.ui.UseMutableStateScreen
 import com.github.mag0716.composesamples.ui.androiddevchallenge3.AndroidDevChallenge3Activity
 import com.github.mag0716.composesamples.ui.theme.ComposeSamplesTheme
 
@@ -37,19 +37,24 @@ class MainActivity : ComponentActivity() {
                             SampleList(
                                 Sample.values().toList()
                             ) { sample ->
-                                if (sample == Sample.AndroidDevChallenge3) {
-                                    startActivity(
-                                        Intent(
-                                            this@MainActivity,
-                                            AndroidDevChallenge3Activity::class.java
+                                when (sample) {
+                                    Sample.AndroidDevChallenge3 -> {
+                                        startActivity(
+                                            Intent(
+                                                this@MainActivity,
+                                                AndroidDevChallenge3Activity::class.java
+                                            )
                                         )
-                                    )
-                                } else if (sample == Sample.RequiredSize) {
-                                    navController.navigate("requiredSize")
-                                } else if (sample == Sample.BoxWithConstraints) {
-                                    navController.navigate("boxWithConstraints")
-                                } else {
-                                    navController.navigate("dummy")
+                                    }
+                                    Sample.RequiredSize -> {
+                                        navController.navigate("requiredSize")
+                                    }
+                                    Sample.BoxWithConstraints -> {
+                                        navController.navigate("boxWithConstraints")
+                                    }
+                                    Sample.UseMutableState -> {
+                                        navController.navigate("useMutableState")
+                                    }
                                 }
                             }
                         }
@@ -59,8 +64,8 @@ class MainActivity : ComponentActivity() {
                         composable("boxWithConstraints") {
                             BoxWithConstraintsScopeScreen()
                         }
-                        composable("dummy") {
-                            Dummy()
+                        composable("useMutableState") {
+                            UseMutableStateScreen()
                         }
                     }
                 }
