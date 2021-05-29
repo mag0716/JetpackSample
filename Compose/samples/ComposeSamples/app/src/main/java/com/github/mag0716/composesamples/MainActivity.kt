@@ -2,11 +2,16 @@ package com.github.mag0716.composesamples
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Scanner
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
@@ -27,7 +32,17 @@ class MainActivity : ComponentActivity() {
                     // TODO: 画面遷移したらUp keyを表示させたいが、TopAppBarはどこで実装すべき？
                     topBar = {
                         TopAppBar(
-                            title = { Text(getString(R.string.app_name)) }
+                            title = { Text(getString(R.string.app_name)) },
+                            actions = {
+                                IconButton(onClick = {
+                                    Log.d(TAG, radiography.Radiography.scan())
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Scanner,
+                                        contentDescription = ""
+                                    )
+                                }
+                            }
                         )
                     }
                 ) {
@@ -71,5 +86,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    companion object {
+        const val TAG = "ComposeSamples"
     }
 }
