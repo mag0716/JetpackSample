@@ -11,4 +11,7 @@ enum class Sample {
 
     // State
     UseMutableState,
+
+    // Effects
+    LaunchedEffect,
 }
