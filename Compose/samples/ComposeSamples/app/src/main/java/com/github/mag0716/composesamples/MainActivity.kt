@@ -86,8 +86,8 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate("useMutableState")
                             }
                             // Effect
-                            Sample.LaunchedEffect -> {
-                                navController.navigate("launchedEffect")
+                            Sample.UseCoroutineInComposable -> {
+                                navController.navigate("useCoroutineInComposable")
                             }
                         }
                     }
@@ -101,7 +101,7 @@ class MainActivity : ComponentActivity() {
                 composable("useMutableState") {
                     UseMutableStateScreen()
                 }
-                composable("launchedEffect") {
+                composable("useCoroutineInComposable") {
                     LaunchedEffectSampleScreen(scaffoldState)
                 }
             }

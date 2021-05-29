@@ -13,5 +13,5 @@ enum class Sample {
     UseMutableState,
 
     // Effects
-    LaunchedEffect,
+    UseCoroutineInComposable,
 }
