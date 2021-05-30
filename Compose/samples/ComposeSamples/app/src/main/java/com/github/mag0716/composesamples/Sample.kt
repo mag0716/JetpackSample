@@ -14,4 +14,5 @@ enum class Sample {
 
     // Effects
     UseCoroutineInComposable,
+    RememberUpdatedState,
 }

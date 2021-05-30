@@ -23,6 +23,7 @@ import com.github.mag0716.composesamples.ui.RequiredSizeScreen
 import com.github.mag0716.composesamples.ui.SampleList
 import com.github.mag0716.composesamples.ui.UseMutableStateScreen
 import com.github.mag0716.composesamples.ui.LaunchedEffectSampleScreen
+import com.github.mag0716.composesamples.ui.RememberUpdatedStateSampleScreen
 import com.github.mag0716.composesamples.ui.androiddevchallenge3.AndroidDevChallenge3Activity
 import com.github.mag0716.composesamples.ui.theme.ComposeSamplesTheme
 
@@ -89,6 +90,9 @@ class MainActivity : ComponentActivity() {
                             Sample.UseCoroutineInComposable -> {
                                 navController.navigate("useCoroutineInComposable")
                             }
+                            Sample.RememberUpdatedState -> {
+                                navController.navigate("rememberUpdatedState")
+                            }
                         }
                     }
                 }
@@ -103,6 +107,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("useCoroutineInComposable") {
                     LaunchedEffectSampleScreen(scaffoldState)
+                }
+                composable("rememberUpdatedState") {
+                    RememberUpdatedStateSampleScreen()
                 }
             }
         }
