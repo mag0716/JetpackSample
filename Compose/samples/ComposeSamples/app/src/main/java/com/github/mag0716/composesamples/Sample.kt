@@ -11,4 +11,9 @@ enum class Sample {
 
     // State
     UseMutableState,
+
+    // Effects
+    UseCoroutineInComposable,
+    RememberUpdatedState,
+    SideEffectSample,
 }
