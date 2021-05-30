@@ -24,6 +24,7 @@ import com.github.mag0716.composesamples.ui.SampleList
 import com.github.mag0716.composesamples.ui.UseMutableStateScreen
 import com.github.mag0716.composesamples.ui.LaunchedEffectSampleScreen
 import com.github.mag0716.composesamples.ui.RememberUpdatedStateSampleScreen
+import com.github.mag0716.composesamples.ui.SideEffectSampleScreen
 import com.github.mag0716.composesamples.ui.androiddevchallenge3.AndroidDevChallenge3Activity
 import com.github.mag0716.composesamples.ui.theme.ComposeSamplesTheme
 
@@ -93,6 +94,9 @@ class MainActivity : ComponentActivity() {
                             Sample.RememberUpdatedState -> {
                                 navController.navigate("rememberUpdatedState")
                             }
+                            Sample.SideEffectSample -> {
+                                navController.navigate("sideEffectSample")
+                            }
                         }
                     }
                 }
@@ -110,6 +114,11 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("rememberUpdatedState") {
                     RememberUpdatedStateSampleScreen()
+                }
+                composable("sideEffectSample") {
+                    SideEffectSampleScreen {
+                        navController.popBackStack()
+                    }
                 }
             }
         }
