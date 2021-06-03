@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Scanner
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.github.mag0716.composesamples.ui.BoxWithConstraintsScopeScreen
 import com.github.mag0716.composesamples.ui.RequiredSizeScreen
