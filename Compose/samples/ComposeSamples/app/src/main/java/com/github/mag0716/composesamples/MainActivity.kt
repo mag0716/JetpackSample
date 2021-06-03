@@ -20,6 +20,7 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.github.mag0716.composesamples.ui.BoxWithConstraintsScopeScreen
 import com.github.mag0716.composesamples.ui.RequiredSizeScreen
+import com.github.mag0716.composesamples.ui.TextSampleScreen
 import com.github.mag0716.composesamples.ui.SampleList
 import com.github.mag0716.composesamples.ui.UseMutableStateScreen
 import com.github.mag0716.composesamples.ui.LaunchedEffectSampleScreen
@@ -83,6 +84,9 @@ class MainActivity : ComponentActivity() {
                             Sample.BoxWithConstraints -> {
                                 navController.navigate("boxWithConstraints")
                             }
+                            Sample.Text -> {
+                                navController.navigate("text")
+                            }
                             // State
                             Sample.UseMutableState -> {
                                 navController.navigate("useMutableState")
@@ -105,6 +109,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("boxWithConstraints") {
                     BoxWithConstraintsScopeScreen()
+                }
+                composable("text") {
+                    TextSampleScreen()
                 }
                 composable("useMutableState") {
                     UseMutableStateScreen()
