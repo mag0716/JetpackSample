@@ -8,6 +8,7 @@ enum class Sample {
     // Layout
     RequiredSize,
     BoxWithConstraints,
+    Text,
 
     // State
     UseMutableState,
