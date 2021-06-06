@@ -12,7 +12,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 
 sealed class BottomNavigationMenu(val route: String, val title: String, val icon: ImageVector) {
     object Home : BottomNavigationMenu("home", "Home", Icons.Filled.Home)
@@ -37,7 +40,6 @@ fun BottomNavigationScreen() {
                 backgroundColor = MaterialTheme.colors.primary
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
                 bottomNavigationMenus.forEach { menu ->
                     BottomNavigationItem(
                         icon = {
@@ -53,11 +55,11 @@ fun BottomNavigationScreen() {
                                 style = MaterialTheme.typography.caption
                             )
                         },
-                        selected = currentRoute == menu.route,
+                        selected = navBackStackEntry?.destination?.route == menu.route,
                         onClick = {
                             navController.navigate(menu.route) {
-                                popUpTo = navController.graph.startDestination
                                 launchSingleTop = true
+                                popUpTo(navController.graph.startDestinationId)
                             }
                         }
                     )

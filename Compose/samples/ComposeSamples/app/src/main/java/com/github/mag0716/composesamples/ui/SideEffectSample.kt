@@ -54,9 +54,9 @@ fun BackHandlerDebug(
         Log.d(TAG, "SideEffect : $enabled")
         backCallback.isEnabled = enabled
     }
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current.onBackPressedDispatcher
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     DisposableEffect(backDispatcher) {
-        backDispatcher.addCallback(backCallback)
+        backDispatcher?.addCallback(backCallback)
         onDispose {
             Log.d(TAG, "dispose : ${backCallback.isEnabled}")
             backCallback.remove()
