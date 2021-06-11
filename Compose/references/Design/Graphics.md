@@ -29,3 +29,10 @@ Note: `Canvas` ComposableはView-baseの`Canvas`を生成、管理し、状態�
 * `drawCircle`
 
 ## DrawScope
+
+`DrawScope.inset()`を利用することで現在のスコープのデフォルトパラメーターを調整することができる。
+
+`DrawScope`は`rotate()`のような簡単な変換が用意されている。
+
+複数の変換を適用する場合は、`DrawScope`のネストではなく`withTransform()`の利用がおすすめ。
+`WithTransform()`ではComposeがネストされた各変換を計算して保存する必要がないのでネストよりも効率がよくなる。

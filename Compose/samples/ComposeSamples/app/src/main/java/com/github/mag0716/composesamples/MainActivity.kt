@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.github.mag0716.composesamples.ui.BoxWithConstraintsScopeScreen
 import com.github.mag0716.composesamples.ui.RequiredSizeScreen
 import com.github.mag0716.composesamples.ui.TextSampleScreen
+import com.github.mag0716.composesamples.ui.GraphicsSampleScreen
 import com.github.mag0716.composesamples.ui.SampleList
 import com.github.mag0716.composesamples.ui.UseMutableStateScreen
 import com.github.mag0716.composesamples.ui.LaunchedEffectSampleScreen
@@ -86,6 +87,9 @@ class MainActivity : ComponentActivity() {
                             Sample.Text -> {
                                 navController.navigate("text")
                             }
+                            Sample.Graphics -> {
+                                navController.navigate("graphics")
+                            }
                             // State
                             Sample.UseMutableState -> {
                                 navController.navigate("useMutableState")
@@ -111,6 +115,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("text") {
                     TextSampleScreen()
+                }
+                composable("graphics") {
+                    GraphicsSampleScreen()
                 }
                 composable("useMutableState") {
                     UseMutableStateScreen()
