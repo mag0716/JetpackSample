@@ -9,6 +9,7 @@ enum class Sample {
     RequiredSize,
     BoxWithConstraints,
     Text,
+    Graphics,
 
     // State
     UseMutableState,
