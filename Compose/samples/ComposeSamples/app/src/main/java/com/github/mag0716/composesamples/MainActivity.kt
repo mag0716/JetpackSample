@@ -21,6 +21,7 @@ import com.github.mag0716.composesamples.ui.BoxWithConstraintsScopeScreen
 import com.github.mag0716.composesamples.ui.RequiredSizeScreen
 import com.github.mag0716.composesamples.ui.TextSampleScreen
 import com.github.mag0716.composesamples.ui.GraphicsSampleScreen
+import com.github.mag0716.composesamples.ui.AnimationSampleScreen
 import com.github.mag0716.composesamples.ui.SampleList
 import com.github.mag0716.composesamples.ui.UseMutableStateScreen
 import com.github.mag0716.composesamples.ui.LaunchedEffectSampleScreen
@@ -90,6 +91,9 @@ class MainActivity : ComponentActivity() {
                             Sample.Graphics -> {
                                 navController.navigate("graphics")
                             }
+                            Sample.Animation -> {
+                                navController.navigate("animation")
+                            }
                             // State
                             Sample.UseMutableState -> {
                                 navController.navigate("useMutableState")
@@ -118,6 +122,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("graphics") {
                     GraphicsSampleScreen()
+                }
+                composable("animation") {
+                    AnimationSampleScreen()
                 }
                 composable("useMutableState") {
                     UseMutableStateScreen()

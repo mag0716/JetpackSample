@@ -10,6 +10,7 @@ enum class Sample {
     BoxWithConstraints,
     Text,
     Graphics,
+    Animation,
 
     // State
     UseMutableState,
