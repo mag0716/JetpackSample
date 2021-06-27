@@ -1,9 +1,7 @@
 package com.github.mag0716.composesamples.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -41,7 +39,11 @@ fun VisibilityAnimationSample() {
     }) {
         Text("toggle visibility")
     }
-    AnimatedVisibility(visible = isVisible) {
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn() + slideInVertically(),
+        exit = fadeOut() + shrinkVertically()
+    ) {
         Box(
             modifier = Modifier
                 .size(300.dp)
