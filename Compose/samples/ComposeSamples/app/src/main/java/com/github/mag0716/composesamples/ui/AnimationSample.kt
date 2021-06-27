@@ -29,6 +29,8 @@ fun AnimationSampleScreen() {
         VisibilityAnimationSample()
         Text("animateContentSize")
         AnimateContentSizeSample()
+        Text("Crossfade")
+        CrossfadeSample()
     }
 }
 
@@ -72,4 +74,31 @@ fun AnimateContentSizeSample() {
             .size(contentSize)
             .background(color = Color.Red)
     )
+}
+
+@Composable
+fun CrossfadeSample() {
+    var isVisible by remember { mutableStateOf(true) }
+    Button(onClick = {
+        isVisible = isVisible.not()
+    }) {
+        Text("toggle visibility")
+    }
+    Crossfade(
+        targetState = isVisible
+    ) {
+        if (it) {
+            Box(
+                modifier = Modifier
+                    .size(100.dp)
+                    .background(color = Color.Red)
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(100.dp)
+                    .background(color = Color.Green)
+            )
+        }
+    }
 }
