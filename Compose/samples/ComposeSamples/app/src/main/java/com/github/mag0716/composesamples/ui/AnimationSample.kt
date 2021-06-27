@@ -58,8 +58,13 @@ fun VisibilityAnimationSample() {
 @Composable
 fun AnimateContentSizeSample() {
     var contentSize by remember { mutableStateOf(100.dp) }
-    Button(onClick = { contentSize += 100.dp }) {
-        Text("size up")
+    Row {
+        Button(onClick = { contentSize += 100.dp }) {
+            Text("size up")
+        }
+        Button(onClick = { contentSize -= 100.dp }) {
+            Text("size down")
+        }
     }
     Box(
         modifier = Modifier
