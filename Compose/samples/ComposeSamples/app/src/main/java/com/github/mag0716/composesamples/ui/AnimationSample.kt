@@ -27,6 +27,8 @@ fun AnimationSampleScreen() {
     ) {
         Text("AnimatedVisibility")
         VisibilityAnimationSample()
+        Text("animateContentSize")
+        AnimateContentSizeSample()
     }
 }
 
@@ -46,9 +48,23 @@ fun VisibilityAnimationSample() {
     ) {
         Box(
             modifier = Modifier
-                .size(300.dp)
+                .size(100.dp)
                 .background(color = Color.Red)
 
         )
     }
+}
+
+@Composable
+fun AnimateContentSizeSample() {
+    var contentSize by remember { mutableStateOf(100.dp) }
+    Button(onClick = { contentSize += 100.dp }) {
+        Text("size up")
+    }
+    Box(
+        modifier = Modifier
+            .animateContentSize()
+            .size(contentSize)
+            .background(color = Color.Red)
+    )
 }
