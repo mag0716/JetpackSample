@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.compose.material.*
 import androidx.compose.material.Scaffold
@@ -21,6 +22,7 @@ import com.github.mag0716.composesamples.ui.BoxWithConstraintsScopeScreen
 import com.github.mag0716.composesamples.ui.RequiredSizeScreen
 import com.github.mag0716.composesamples.ui.TextSampleScreen
 import com.github.mag0716.composesamples.ui.GraphicsSampleScreen
+import com.github.mag0716.composesamples.ui.AnimationSampleScreen
 import com.github.mag0716.composesamples.ui.SampleList
 import com.github.mag0716.composesamples.ui.UseMutableStateScreen
 import com.github.mag0716.composesamples.ui.LaunchedEffectSampleScreen
@@ -30,6 +32,7 @@ import com.github.mag0716.composesamples.ui.androiddevchallenge3.AndroidDevChall
 import com.github.mag0716.composesamples.ui.theme.ComposeSamplesTheme
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,6 +42,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @ExperimentalAnimationApi
     @Composable
     private fun MainScreen(
         scaffoldState: ScaffoldState = rememberScaffoldState()
@@ -90,6 +94,9 @@ class MainActivity : ComponentActivity() {
                             Sample.Graphics -> {
                                 navController.navigate("graphics")
                             }
+                            Sample.Animation -> {
+                                navController.navigate("animation")
+                            }
                             // State
                             Sample.UseMutableState -> {
                                 navController.navigate("useMutableState")
@@ -118,6 +125,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("graphics") {
                     GraphicsSampleScreen()
+                }
+                composable("animation") {
+                    AnimationSampleScreen()
                 }
                 composable("useMutableState") {
                     UseMutableStateScreen()
