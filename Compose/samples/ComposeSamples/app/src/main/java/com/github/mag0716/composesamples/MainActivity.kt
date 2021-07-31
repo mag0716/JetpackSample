@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.compose.material.*
 import androidx.compose.material.Scaffold
@@ -31,6 +32,7 @@ import com.github.mag0716.composesamples.ui.androiddevchallenge3.AndroidDevChall
 import com.github.mag0716.composesamples.ui.theme.ComposeSamplesTheme
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,6 +42,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @ExperimentalAnimationApi
     @Composable
     private fun MainScreen(
         scaffoldState: ScaffoldState = rememberScaffoldState()
