@@ -1,0 +1,94 @@
+# Semantics in Compose
+
+https://developer.android.com/jetpack/compose/semantics
+
+CompositionはアプリのUIを記述したものでComposableの実行によって生成される。
+CompositionはUIを記述したComposableで構築されたツリー構造。
+
+Compositionの隣には`Semantics tree`と呼ばれる並列ツリーが存在する。
+このツリーはアクセシビリティサービスやテストフレームワークが理解できる代替方法でUIを記述する。
+アクセシビリティサービスは特定のニーズを持つユーザにアプリを説明するためにツリーを利用する。
+テストフレームワークはこのツリーを使用してアプリを操作し、アプリに関するアサーションを行う。
+`Semantics tree`にはComposableの描画方法に関する情報は含まれていないがComposableの意味に関する情報は含まれている。
+
+もしアプリがfoundationとmaterialのComposable, Modifierから構成されている場合は`Semantics tree`は自動的に生成される。
+低レベルのComposableを追加した場合は手動で提供する必要がある。
+画面に表示されている要素の意味を正しく、もしくは完全に表現できていない場合もあるが、その場合はツリーを調整する必要がある。
+
+`Layout`と`Canvas`を利用して実装しているカレンダーにケースでは、何もしていなければアクセシリビティサービスはコンテンツに関する情報を十分に受け取ることができない。
+例えば、ユーザが17日をクリックしてもアクセシリビティサービスはカレンダー全体の情報しか受け取ることができない。
+この場合、Taklbackは単純にカレンダーや4月のカレンダーなどを通知するだけだが、ユーザはどの日を選択したのかを知ることができない。
+アクセシビリティにするためには、手動で情報を追加する必要がある。
+
+## Semantics properties
+
+UIツリーの全てのノードは`Semantics tree`に並列のノードを保持している。
+`Semantics tree`のノードには対応するComposableの意味を伝えるプロパティが含まれている。
+例えば、`Text`は`text`プロパティが含まれており、Composableの意味を示している。
+`Icon`には`contentDescription`プロパティが含まれており`Icon`が何を意味しているのかをテキストでつてる。
+foudationの上に構築されたCompsableとModifierはすでに関連するプロパティが設定されている。
+`semantics`と`clearAndSetSemantics`Modifierを利用しプロパティを上書きすることもできる。
+例えば、ノードにカスタムアクセシビリティアクションを追加したり、トグル可能な要素に代替の説明を提供したり、特定のテキストComposableを見出しとして考慮するように指定することができる。
+
+`Semantics tree`はLayout Inspectorツールか`PrintToLog()`を利用して視覚化することができる。
+
+Note: Layout Inspectorで`Semantics tree`を見る場合はAndroid Studio Bumblebeeが必要
+
+`Switch`を例にするとLayout Inspectorでは以下のプロパティを確認することができる。
+
+* Role: Switch
+* StateDescription: On
+* ToggleableState: On
+
+`Role`は要素の種別を示している。
+`StateDescription`はONの状態をどのように参照すべきかを記述する。デフォルトでは`On`という単語をローカライズしたものになるが、文脈に応じてより具体的な表現(`Enabled`など)にすることもできる。
+`ToggleableState`はSwitchの現在の状態。
+`OnClick`プロパティはこの要素を操作するためのメソッドを参照する。
+全てのSemanticsプロパティはhttps://developer.android.com/reference/kotlin/androidx/compose/ui/semantics/SemanticsPropertiesを参照。
+全てのアクセシビリティアクションはhttps://developer.android.com/reference/kotlin/androidx/compose/ui/semantics/SemanticsActionsを参照。
+
+Semanticsプロパティを管理することで以下のような可能性が生まれる。
+
+* Talkbackはプロパティを使って画面に表示されているものを読み上げるのでユーザがスムーズに操作できるようになる
+* テストフレームワークがプロパティを使用してノードを検索することでアサーションを行うことができるようになる
+
+Note: アプリを開発する際はSemanticsプロパティを使用して正しい意味を伝えることに重点を置く必要がある。複数のアクセシビリティでよい結果が得られることを確認すること。アクセシビリティに影響するSemanticsプロパティを追加するのはテストができる場合のみとすること。
+
+## Merged and unmerged Semantics tree
+
+前述のように、UIツリーの各Composableは0またはそれ以上のSemanticsプロパティが設定されている場合がある。Semanticsプロパティが設定されていないComposableはSemantics treeの一部としては含まれず、意味があるノードのみが含まれる。しかし、画面に表示されているものの正しい意味を伝えるためには、特定のサブツリーのノードをマージして1つとして扱うことも有効な場合がある。そうすれば、各子孫ノードを個別に扱うのではなく、ノードのセットを全体として推論することができる。目安として、このツリーの各ノードはアクセシビリティサービスを使用する際にフォーカス可能な要素を表している。
+
+例として`Button`がある。`Button`は複数の子ノードを含んでいても1つの要素として推論したいはず。
+
+Semantics treeでは、ボタンの子孫のプロパティがマージされ、1つのツリーとして表示される。
+
+ComposableとModifierは`Modifier.semantics(mergeDescendants = true){}`を呼び出すことで子孫のSemanticsプロパティをマージするかどうかを示すことができる。`true`をセットするとマージすべきであることを示すことができる。`Button`を例にすると、`clickable`Modifierは内部でこの`semantics`Modifierを利用しており、`Button`の子孫ノードがマージされる。Composableでマージの動作を変更する場合については https://developer.android.com/jetpack/compose/accessibility#merge-elements を参照。
+
+foundationとmaterialのいくつかのModifierとComposableはこのプロパティがセットされている。例えば、`clickable`や`toggleable`は自動的に子孫がマージされる。`ListItem`もまたマージされる
+
+### Inspecting the trees
+
+Semantics treeについて話すとき、実際には2つの異なるツリーについて話している。`mergeDescendants`に`true`がセットされているマージされたSemantics treeとノードがマージされていなSemantics tree。アクセシビリティサービスはマージされていないツリーを利用し、`mergeDescendants`プロパティを考慮した独自のマージアルゴリズムを適用する。テストフレームワークではデフォルトでマージされたツリーを利用する。
+
+どちらのツリーとも`printToLog()`で調査することができる。デフォルトではマージされたツリーがログに出力され、代わりにマージされていないツリーを表示するには、`onRoot()`の`useUnmergedTree`パラメータを`true`に設定する。
+
+Layout Inspectorでどちらのツリーも見れるようにするためにはフィルダリングで選択する必要がある。
+
+ツリーのノードごとに、Layout InspectorではMerged SemanticsとSemanticsを表示する。
+
+デフォルトではテストフレームワークの`Matchers`はマージされたSemantics treeを利用する。そのため`Button`のテキストを指定することで操作できるようになる。
+
+`onRoot()`の`useUnmergedTree`パラメータに`true`をセットすることによってこの動作を上書きすることができる。
+
+### Merging behavior
+
+Composableが自分の子孫をマージすべきだと示したとき、そのマージは具体的にどのように行われるのか？
+
+それぞれのSemanticsプロパティはマージ戦略が定義されている。例えば、`ContentDescription`プロパティは全ての子孫の`ContentDescription`をマージする。`SemanticsProperties.kt`の`mergePolicy`をチェックすることでそれぞれのマージ戦略をチェックすることができる。プロパティは常に親または子の値を選択する、値をリストまたは文字列にマージする、マージを許可せず例外を投げる、またはその他のカスタムマージ戦略を選択することができる。
+
+注意すべき点は、自分自身が`mergeDescendants=true`を設定している子孫はマージに含まれないということ。
+例えば、クリック可能なリストアイテム内に`IconToggleButton`がある場合、入れ子になった`clickable`要素があるので`Button`はマージされたツリーに別々に表示され、残りのコンテンツはマージされる。
+
+## Adapting the Semantics tree
+
+前述したように、Semanticsプロパティの上書きやクリアが可能で、ツリーへのマージ動作を変更することができる。これは一般的には自身のカスタムコンポーネントを作成する場合に関係する。正しいプロパティやマージ動作を設定しない限りアクセシブルなアプリやテストはできるようにならない。Semantics treeをどこで適用するかどうかについては https://developer.android.com/jetpack/compose/accessibility や https://developer.android.com/jetpack/compose/testing を参照。
